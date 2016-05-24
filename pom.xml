@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.0.RELEASE</version>
+		<version>1.3.3.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -23,38 +23,45 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<keycloak.version>1.7.0.Final-SNAPSHOT</keycloak.version>
+		<keycloak.version>1.9.1.Final</keycloak.version>
+		<resteasy.version>3.0.16.Final</resteasy.version>
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<!--
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		-->
 		</dependency>
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.jboss.resteasy</groupId> -->
-		<!-- <artifactId>resteasy-spring</artifactId> -->
-		<!-- <version>3.0.13.Final</version> -->
-		<!-- </dependency> -->
-
+<!--
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+-->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>async-http-servlet-3.0</artifactId>
-			<version>3.0.13.Final</version>
+			<version>${resteasy.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-servlet-initializer</artifactId>
-			<version>3.0.13.Final</version>
+			<version>${resteasy.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson-provider</artifactId>
-			<version>3.0.13.Final</version>
+			<version>${resteasy.version}</version>
 		</dependency>
 
 		<dependency>
@@ -65,7 +72,7 @@
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-model-sessions-infinispan</artifactId>
+			<artifactId>keycloak-model-infinispan</artifactId>
 			<version>${keycloak.version}</version>
 		</dependency>
 
@@ -83,19 +90,13 @@
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-events-jpa</artifactId>
-			<version>${keycloak.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-model-jpa</artifactId>
 			<version>${keycloak.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-connections-jpa-liquibase</artifactId>
+			<artifactId>keycloak-saml-core</artifactId>
 			<version>${keycloak.version}</version>
 		</dependency>
 
@@ -121,25 +122,7 @@
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-forms-common-themes</artifactId>
-			<version>${keycloak.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-account-freemarker</artifactId>
-			<version>${keycloak.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-email-freemarker</artifactId>
-			<version>${keycloak.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-login-freemarker</artifactId>
+			<artifactId>keycloak-themes</artifactId>
 			<version>${keycloak.version}</version>
 		</dependency>
 
@@ -161,7 +144,7 @@
 						<dependency>
 							<groupId>org.keycloak</groupId>
 							<artifactId>keycloak-connections-jpa</artifactId>
-						</dependency>						
+						</dependency>
 					</requiresUnpack>
 				</configuration>
 			</plugin>

@@ -13,8 +13,12 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
+import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.transaction.LockingMode;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -46,8 +50,16 @@ public class FixedContext implements Context {
 		}
 
 		if (name.contains("infinispan/Keycloak")) {
-			cacheManager.compareAndSet(null, new DefaultCacheManager());
-			return cacheManager.get();
+
+            ConfigurationBuilder cacheConfigurationBuilder = new ConfigurationBuilder();
+            cacheConfigurationBuilder.invocationBatching().enable();
+            cacheConfigurationBuilder.transaction().lockingMode(LockingMode.PESSIMISTIC);
+
+            Configuration config = cacheConfigurationBuilder.build() ;
+            DefaultCacheManager cacheManager = new DefaultCacheManager(config);
+
+            this.cacheManager.compareAndSet(null, cacheManager);
+			return this.cacheManager.get();
 		}
 
 		System.out.println(getClass().getName() + " lookup: " + name);

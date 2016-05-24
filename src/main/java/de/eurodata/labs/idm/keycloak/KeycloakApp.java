@@ -10,12 +10,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(exclude=LiquibaseAutoConfiguration.class)
+@SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
 public class KeycloakApp {
 
 	static {
@@ -24,21 +23,7 @@ public class KeycloakApp {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KeycloakApp.class, args);
-	}
-
-	@Bean
-	public ServletContextInitializer keycloakInitializer() {
-
-		return servletContext -> {
-
-			// servletContext.setInitParameter("resteasy.scan", "true");
-			//
-			// servletContext.setInitParameter("resteasy.scan.providers", "true");
-			// servletContext.setInitParameter("resteasy.scan.resources", "true");
-
-			// servletContext.setInitParameter("resteasy.servlet.mapping.prefix", "/rest");
-		};
-	}
+	}	
 
 	@Bean
 	public ServletRegistrationBean keycloakRestInterface() {

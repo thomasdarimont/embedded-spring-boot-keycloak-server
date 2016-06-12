@@ -1,0 +1,13 @@
+server:
+  context-path: /
+  port: 8080
+
+resteasy:
+  deployment:
+    async_job_service_enabled: true
+
+management:
+  context-path: /mgmt
+
+keycloak:
+  contextPath: /auth

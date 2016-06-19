@@ -23,7 +23,7 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <keycloak.version>1.9.7.Final</keycloak.version>
+        <keycloak.version>1.9.8.Final</keycloak.version>
         <resteasy.version>3.0.16.Final</resteasy.version>
         <infinispan.version>8.0.1.Final</infinispan.version>
     </properties>

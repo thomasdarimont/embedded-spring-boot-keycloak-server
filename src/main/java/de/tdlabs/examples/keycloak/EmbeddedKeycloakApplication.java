@@ -34,12 +34,12 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         String adminPassword = keycloakServerProperties.getAdminPassword();
 
         try {
-            session.getTransaction().begin();
+            session.getTransactionManager().begin();
             applianceBootstrap.createMasterRealmUser(adminUsername, adminPassword);
-            session.getTransaction().commit();
+            session.getTransactionManager().commit();
         } catch (Exception ex) {
             System.out.println("Couldn't create keycloak master admin user: " + ex.getMessage());
-            session.getTransaction().rollback();
+            session.getTransactionManager().rollback();
         }
 
         session.close();

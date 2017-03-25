@@ -15,51 +15,55 @@ import java.lang.reflect.Proxy;
  */
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
-    static KeycloakServerProperties keycloakServerProperties;
+  static KeycloakServerProperties keycloakServerProperties;
 
-    public EmbeddedKeycloakApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
+  public EmbeddedKeycloakApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
 
-        super(augmentToRedirectContextPath(context), dispatcher);
+    super(augmentToRedirectContextPath(context), dispatcher);
 
-        tryCreateMasterRealmAdminUser();
+    tryCreateMasterRealmAdminUser();
+  }
+
+  private void tryCreateMasterRealmAdminUser() {
+
+    KeycloakSession session = getSessionFactory().create();
+
+    ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
+
+    String adminUsername = keycloakServerProperties.getAdminUsername();
+    String adminPassword = keycloakServerProperties.getAdminPassword();
+
+    try {
+      session.getTransactionManager().begin();
+      applianceBootstrap.createMasterRealmUser(adminUsername, adminPassword);
+      session.getTransactionManager().commit();
+    } catch (Exception ex) {
+      System.out.println("Couldn't create keycloak master admin user: " + ex.getMessage());
+      session.getTransactionManager().rollback();
     }
 
-    private void tryCreateMasterRealmAdminUser() {
-
-        KeycloakSession session = getSessionFactory().create();
-
-        ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
-
-        String adminUsername = keycloakServerProperties.getAdminUsername();
-        String adminPassword = keycloakServerProperties.getAdminPassword();
-
-        try {
-            session.getTransactionManager().begin();
-            applianceBootstrap.createMasterRealmUser(adminUsername, adminPassword);
-            session.getTransactionManager().commit();
-        } catch (Exception ex) {
-            System.out.println("Couldn't create keycloak master admin user: " + ex.getMessage());
-            session.getTransactionManager().rollback();
-        }
-
-        session.close();
-    }
+    session.close();
+  }
 
 
-    static ServletContext augmentToRedirectContextPath(ServletContext servletContext) {
+  static ServletContext augmentToRedirectContextPath(ServletContext servletContext) {
 
-        ClassLoader classLoader = servletContext.getClassLoader();
-        Class[] interfaces = {ServletContext.class};
+    ClassLoader classLoader = servletContext.getClassLoader();
+    Class[] interfaces = {ServletContext.class};
 
-        InvocationHandler invocationHandler = (proxy, method, args) -> {
+    InvocationHandler invocationHandler = (proxy, method, args) -> {
 
-            if ("getContextPath".equals(method.getName())) {
-                return keycloakServerProperties.getContextPath();
-            }
+      if ("getContextPath".equals(method.getName())) {
+        return keycloakServerProperties.getContextPath();
+      }
 
-            return method.invoke(servletContext, args);
-        };
+      if ("getInitParameter".equals(method.getName()) && args.length == 1 && "keycloak.embedded".equals(args[0])) {
+        return "true";
+      }
 
-        return ServletContext.class.cast(Proxy.newProxyInstance(classLoader, interfaces, invocationHandler));
-    }
+      return method.invoke(servletContext, args);
+    };
+
+    return ServletContext.class.cast(Proxy.newProxyInstance(classLoader, interfaces, invocationHandler));
+  }
 }

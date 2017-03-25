@@ -6,8 +6,22 @@ resteasy:
   deployment:
     async_job_service_enabled: true
 
+
 management:
   context-path: /mgmt
+  security:
+    enabled: true
+    roles: MANAGER
 
 keycloak:
   contextPath: /auth
+
+security:
+  user:
+    name: manager
+    password: manager
+    role: MANAGER
+
+  basic:
+    enabled: true
+    path: /mgmt

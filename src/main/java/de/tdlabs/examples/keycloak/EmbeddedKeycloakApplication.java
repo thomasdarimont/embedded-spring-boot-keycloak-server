@@ -1,5 +1,6 @@
 package de.tdlabs.examples.keycloak;
 
+import de.tdlabs.examples.keycloak.KeycloakServerProperties.AdminUser;
 import org.jboss.resteasy.core.Dispatcher;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.services.managers.ApplianceBootstrap;
@@ -9,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 
 /**
  * Created by tom on 12.06.16.
@@ -30,12 +32,11 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
     ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
 
-    String adminUsername = keycloakServerProperties.getAdminUsername();
-    String adminPassword = keycloakServerProperties.getAdminPassword();
+    AdminUser admin = keycloakServerProperties.getAdminUser();
 
     try {
       session.getTransactionManager().begin();
-      applianceBootstrap.createMasterRealmUser(adminUsername, adminPassword);
+      applianceBootstrap.createMasterRealmUser(admin.getUsername(), admin.getPassword());
       session.getTransactionManager().commit();
     } catch (Exception ex) {
       System.out.println("Couldn't create keycloak master admin user: " + ex.getMessage());
@@ -46,7 +47,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
   }
 
 
-  static ServletContext augmentToRedirectContextPath(ServletContext servletContext) {
+  private static ServletContext augmentToRedirectContextPath(ServletContext servletContext) {
 
     ClassLoader classLoader = servletContext.getClassLoader();
     Class[] interfaces = {ServletContext.class};
@@ -60,6 +61,8 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
       if ("getInitParameter".equals(method.getName()) && args.length == 1 && "keycloak.embedded".equals(args[0])) {
         return "true";
       }
+
+      System.out.printf("%s %s%n", method.getName(), Arrays.toString(args));
 
       return method.invoke(servletContext, args);
     };

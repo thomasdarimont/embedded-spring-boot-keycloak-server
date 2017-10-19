@@ -67,6 +67,7 @@
     "connectionsJpa": {
         "provider": "default",
         "default": {
+            "dataSource":"spring/datasource",
             "url": "${env.KEYCLOAK_DATABASE_URL:jdbc:h2:./target/keycloak}",
             "driver": "${keycloak.connectionsJpa.driver:org.h2.Driver}",
             "driverDialect": "${keycloak.connectionsJpa.driverDialect:}",

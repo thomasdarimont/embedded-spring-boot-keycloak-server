@@ -3,38 +3,51 @@ package de.tdlabs.examples.keycloak;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Created by tom on 12.06.16.
+ * @author Thomas Darimont
  */
-@ConfigurationProperties(prefix = "keycloak")
+@ConfigurationProperties(prefix = "keycloak.server")
 public class KeycloakServerProperties {
 
-    String contextPath = "/auth";
+  String contextPath = "/auth";
 
-    String adminUsername = "admin";
+  AdminUser adminUser = new AdminUser();
 
-    String adminPassword = "admin";
+  public String getContextPath() {
+    return contextPath;
+  }
 
-    public String getContextPath() {
-        return contextPath;
+  public void setContextPath(String contextPath) {
+    this.contextPath = contextPath;
+  }
+
+  public AdminUser getAdminUser() {
+    return adminUser;
+  }
+
+  public void setAdminUser(AdminUser adminUser) {
+    this.adminUser = adminUser;
+  }
+
+  public static class AdminUser {
+
+    String username = "admin";
+
+    String password = "admin";
+
+    public String getUsername() {
+      return username;
     }
 
-    public void setContextPath(String contextPath) {
-        this.contextPath = contextPath;
+    public void setUsername(String username) {
+      this.username = username;
     }
 
-    public String getAdminUsername() {
-        return adminUsername;
+    public String getPassword() {
+      return password;
     }
 
-    public void setAdminUsername(String adminUsername) {
-        this.adminUsername = adminUsername;
+    public void setPassword(String password) {
+      this.password = password;
     }
-
-    public String getAdminPassword() {
-        return adminPassword;
-    }
-
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
-    }
+  }
 }

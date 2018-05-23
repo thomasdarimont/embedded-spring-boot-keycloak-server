@@ -5,7 +5,7 @@
 
     <groupId>de.tdlabs</groupId>
     <artifactId>spring-boot-keycloak-server-example</artifactId>
-    <version>0.0.6.BUILD-SNAPSHOT</version>
+    <version>0.0.7.BUILD-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-boot-keycloak-server-example</name>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <version>1.5.13.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 

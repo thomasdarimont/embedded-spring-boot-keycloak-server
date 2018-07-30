@@ -25,7 +25,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <keycloak.version>3.4.3.Final</keycloak.version>
         <resteasy.version>3.0.16.Final</resteasy.version>
-        <infinispan.version>8.2.8.Final</infinispan.version>
+        <infinispan.version>8.2.11.Final</infinispan.version>
     </properties>
 
     <dependencies>

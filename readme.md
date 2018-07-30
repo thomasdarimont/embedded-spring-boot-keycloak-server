@@ -1,4 +1,4 @@
-Simple example for embedding Keycloak in a Spring Boot App 
+Example for embedding Keycloak Server in a Spring-Boot App 
 ----------------------------------------------------------
 This is just a Proof of Concept and not recommended for production use.
 Nevertheless it is a great way develop and test Keycloak extensions or 

@@ -8,7 +8,7 @@
     <version>0.0.8.BUILD-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>spring-boot-keycloak-server-example</name>
+    <name>spring-boot-keycloak-server</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>

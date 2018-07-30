@@ -12,7 +12,7 @@ mvn package
 
 and start the spring boot app via:
 ```
-java -jar target/spring-boot-keycloak-server-example-*.BUILD-SNAPSHOT.jar
+java -jar target/spring-boot-keycloak-server-*.jar
 ```
 
 The embedded Keycloak server is now reachable via http://localhost:8080/auth.

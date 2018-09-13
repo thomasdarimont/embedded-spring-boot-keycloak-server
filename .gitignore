@@ -40,6 +40,7 @@ data/
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
+.idea/hotswap_agent.xml
 
 # Gradle:
 .idea/**/gradle.xml

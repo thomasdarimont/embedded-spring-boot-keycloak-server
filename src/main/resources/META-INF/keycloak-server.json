@@ -1,4 +1,14 @@
 {
+    "hostname": {
+        "provider": "request",
+
+        "fixed": {
+            "hostname": "${keycloak.override.hostname:localhost}",
+            "httpPort": "${keycloak.override.httpPort:-1}",
+            "httpsPort": "${keycloak.override.httpsPort:-1}"
+        }
+    },
+
     "admin": {
         "realm": "master"
     },
@@ -89,6 +99,9 @@
 
     "connectionsInfinispan": {
         "default": {
+            "jgroupsUdpMcastAddr": "${keycloak.connectionsInfinispan.jgroupsUdpMcastAddr:234.56.78.90}",
+            "nodeName": "${keycloak.connectionsInfinispan.nodeName,jboss.node.name:}",
+            "siteName": "${keycloak.connectionsInfinispan.siteName,jboss.site.name:}",
             "clustered": "${keycloak.connectionsInfinispan.clustered:false}",
             "async": "${keycloak.connectionsInfinispan.async:false}",
             "sessionsOwners": "${keycloak.connectionsInfinispan.sessionsOwners:1}",

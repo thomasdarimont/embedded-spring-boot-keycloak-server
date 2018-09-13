@@ -13,7 +13,7 @@ resteasy:
 
 
 management:
-  context-path: /mgmt
+  context-path: /actuator
   security:
     enabled: true
     roles: MANAGER

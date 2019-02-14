@@ -21,69 +21,69 @@ import javax.sql.DataSource;
 @Configuration
 class EmbeddedKeycloakConfig {
 
-  @Bean
-  ServletRegistrationBean keycloakJaxRsApplication(KeycloakServerProperties keycloakServerProperties, DataSource dataSource) throws Exception {
+    @Bean
+    ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(KeycloakServerProperties keycloakServerProperties, DataSource dataSource) throws Exception {
 
-    mockJndiEnvironment(dataSource);
+        mockJndiEnvironment(dataSource);
 
-    //FIXME: hack to propagate Spring Boot Properties to Keycloak Application
-    EmbeddedKeycloakApplication.keycloakServerProperties = keycloakServerProperties;
+        //FIXME: hack to propagate Spring Boot Properties to Keycloak Application
+        EmbeddedKeycloakApplication.keycloakServerProperties = keycloakServerProperties;
 
-    ServletRegistrationBean servlet = new ServletRegistrationBean(new HttpServlet30Dispatcher());
-    servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
-    servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, keycloakServerProperties.getContextPath());
-    servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "true");
-    servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/*");
-    servlet.setLoadOnStartup(1);
-    servlet.setAsyncSupported(true);
+        ServletRegistrationBean<HttpServlet30Dispatcher> servlet = new ServletRegistrationBean<>(new HttpServlet30Dispatcher());
+        servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, keycloakServerProperties.getContextPath());
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "true");
+        servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/*");
+        servlet.setLoadOnStartup(1);
+        servlet.setAsyncSupported(true);
 
-    return servlet;
-  }
+        return servlet;
+    }
 
-  @Bean
-  ServletListenerRegistrationBean<KeycloakSessionDestroyListener> keycloakSessionDestroyListener() {
-    return new ServletListenerRegistrationBean<>(new KeycloakSessionDestroyListener());
-  }
+    @Bean
+    ServletListenerRegistrationBean<KeycloakSessionDestroyListener> keycloakSessionDestroyListener() {
+        return new ServletListenerRegistrationBean<>(new KeycloakSessionDestroyListener());
+    }
 
-  @Bean
-  FilterRegistrationBean keycloakSessionManagement(KeycloakServerProperties keycloakServerProperties) {
+    @Bean
+    FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement(KeycloakServerProperties keycloakServerProperties) {
 
-    FilterRegistrationBean filter = new FilterRegistrationBean();
-    filter.setName("Keycloak Session Management");
-    filter.setFilter(new KeycloakSessionServletFilter());
-    filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/*");
+        FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
+        filter.setName("Keycloak Session Management");
+        filter.setFilter(new KeycloakSessionServletFilter());
+        filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/*");
 
-    return filter;
-  }
+        return filter;
+    }
 
 
-  private void mockJndiEnvironment(DataSource dataSource) throws NamingException {
-    NamingManager.setInitialContextFactoryBuilder((env) -> (environment) -> new InitialContext() {
+    private void mockJndiEnvironment(DataSource dataSource) throws NamingException {
+        NamingManager.setInitialContextFactoryBuilder((env) -> (environment) -> new InitialContext() {
 
-      @Override
-      public Object lookup(Name name) throws NamingException {
-        return lookup(name.toString());
-      }
+            @Override
+            public Object lookup(Name name) {
+                return lookup(name.toString());
+            }
 
-      @Override
-      public Object lookup(String name) throws NamingException {
+            @Override
+            public Object lookup(String name) {
 
-        if ("spring/datasource".equals(name)) {
-          return dataSource;
-        }
+                if ("spring/datasource".equals(name)) {
+                    return dataSource;
+                }
 
-        return null;
-      }
+                return null;
+            }
 
-      @Override
-      public NameParser getNameParser(String name) throws NamingException {
-        return CompositeName::new;
-      }
+            @Override
+            public NameParser getNameParser(String name) {
+                return CompositeName::new;
+            }
 
-      @Override
-      public void close() throws NamingException {
-        //NOOP
-      }
-    });
-  }
+            @Override
+            public void close() {
+                //NOOP
+            }
+        });
+    }
 }

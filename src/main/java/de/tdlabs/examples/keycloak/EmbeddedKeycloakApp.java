@@ -1,5 +1,6 @@
 package de.tdlabs.examples.keycloak;
 
+import org.keycloak.services.filters.KeycloakSessionServletFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -9,24 +10,26 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 
+import javax.servlet.Filter;
+import java.util.Optional;
+
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
 @EnableConfigurationProperties(KeycloakServerProperties.class)
 public class EmbeddedKeycloakApp {
 
-  public static void main(String[] args) {
-    SpringApplication.run(EmbeddedKeycloakApp.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(EmbeddedKeycloakApp.class, args);
+    }
 
-  @Bean
-  ApplicationListener<ApplicationReadyEvent> onApplicationReadyEventListener(ServerProperties serverProperties, KeycloakServerProperties keycloakServerProperties) {
+    @Bean
+    ApplicationListener<ApplicationReadyEvent> onApplicationReadyEventListener(ServerProperties serverProperties, KeycloakServerProperties keycloakServerProperties) {
 
-    return (evt) -> {
+        return (evt) -> {
 
-      Integer port = serverProperties.getPort();
-      String rootContextPath = serverProperties.getContextPath();
-      String keycloakContextPath = keycloakServerProperties.getContextPath();
+            Integer port = serverProperties.getPort();
+            String keycloakContextPath = keycloakServerProperties.getContextPath();
 
-      System.out.printf("Embedded Keycloak started: http://localhost:%s%s%s to use keycloak%n", port, rootContextPath, keycloakContextPath);
-    };
-  }
+            System.out.printf("Embedded Keycloak started: http://localhost:%d%s to use keycloak%n", port, keycloakContextPath);
+        };
+    }
 }

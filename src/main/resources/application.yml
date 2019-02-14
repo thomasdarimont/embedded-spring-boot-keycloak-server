@@ -1,33 +1,15 @@
 spring:
   datasource:
     username: sa
-    url: jdbc:h2:./data/keycloak
+    url: jdbc:h2:./data/keycloak;DB_CLOSE_ON_EXIT=FALSE
 
 server:
-  context-path: /
   port: 8080
 
 resteasy:
   deployment:
     async_job_service_enabled: true
 
-
-management:
-  context-path: /actuator
-  security:
-    enabled: true
-    roles: MANAGER
-
 keycloak:
   server:
     contextPath: /auth
-
-security:
-  user:
-    name: manager
-    password: manager
-    role: MANAGER
-
-  basic:
-    enabled: true
-    path: /mgmt

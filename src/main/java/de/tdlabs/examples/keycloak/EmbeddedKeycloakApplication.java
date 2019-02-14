@@ -66,7 +66,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
                 return "true";
             }
 
-            LOG.info("{} {}", method.getName(), Arrays.toString(args));
+            LOG.info("Invoke on ServletContext: method=[{}] args=[{}]", method.getName(), Arrays.toString(args));
 
             return method.invoke(servletContext, args);
         };

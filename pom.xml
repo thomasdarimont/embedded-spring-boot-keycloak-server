@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.2.RELEASE</version>
+        <version>2.1.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,9 +23,9 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <keycloak.version>4.8.3.Final</keycloak.version>
-        <resteasy.version>3.6.1.Final</resteasy.version>
-        <infinispan.version>9.3.1.Final</infinispan.version>
+        <keycloak.version>5.0.0</keycloak.version>
+        <resteasy.version>3.6.2.Final</resteasy.version>
+        <infinispan.version>9.4.3.Final</infinispan.version>
     </properties>
 
     <dependencies>

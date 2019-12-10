@@ -25,7 +25,7 @@ data/
 .idea/compiler.xml
 .idea/encodings.xml
 .idea/vcs.xml
-
+.idea/codeStyles/*
 
 # User-specific stuff:
 .idea/**/workspace.xml

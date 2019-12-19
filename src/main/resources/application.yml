@@ -6,8 +6,6 @@ spring:
       maximum-pool-size: 25
       minimum-idle: 1
 
-
-
 server:
   port: 8080
 

@@ -1,7 +1,7 @@
 package de.tdlabs.examples.keycloak;
 
 import de.tdlabs.examples.keycloak.KeycloakServerProperties.AdminUser;
-import org.jboss.resteasy.core.Dispatcher;
+import org.keycloak.common.util.Resteasy;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.services.managers.ApplianceBootstrap;
 import org.keycloak.services.resources.KeycloakApplication;
@@ -23,10 +23,9 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
     static KeycloakServerProperties keycloakServerProperties;
 
-    public EmbeddedKeycloakApplication(@Context ServletContext context, @Context Dispatcher dispatcher) {
+    public EmbeddedKeycloakApplication(@Context ServletContext context) {
 
-        super(augmentToRedirectContextPath(context), dispatcher);
-
+        Resteasy.pushContext(ServletContext.class, augmentToRedirectContextPath(context));
         tryCreateMasterRealmAdminUser();
     }
 

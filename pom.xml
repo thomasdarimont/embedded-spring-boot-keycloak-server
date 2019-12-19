@@ -5,11 +5,11 @@
 
     <groupId>de.tdlabs</groupId>
     <artifactId>spring-boot-keycloak-server-example</artifactId>
-    <version>0.0.10.BUILD-SNAPSHOT</version>
+    <version>0.1.801.0.BUILD-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-boot-keycloak-server</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Spring Boot powered Keycloak Server</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -23,9 +23,9 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <keycloak.version>7.0.1</keycloak.version>
-        <resteasy.version>3.7.0.Final</resteasy.version>
-        <infinispan.version>9.4.14.Final</infinispan.version>
+        <keycloak.version>8.0.1</keycloak.version>
+        <resteasy.version>3.9.1.Final</resteasy.version>
+        <infinispan.version>9.4.16.Final</infinispan.version>
     </properties>
 
     <dependencies>
@@ -87,6 +87,24 @@
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-model-infinispan</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-kerberos-federation</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-ldap-federation</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-server-spi</artifactId>
             <version>${keycloak.version}</version>
         </dependency>
 

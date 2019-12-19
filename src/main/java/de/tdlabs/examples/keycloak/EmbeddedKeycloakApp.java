@@ -1,20 +1,18 @@
 package de.tdlabs.examples.keycloak;
 
-import org.keycloak.services.filters.KeycloakSessionServletFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 
-import javax.servlet.Filter;
-import java.util.Optional;
-
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
 @EnableConfigurationProperties(KeycloakServerProperties.class)
+@ServletComponentScan
 public class EmbeddedKeycloakApp {
 
     public static void main(String[] args) {

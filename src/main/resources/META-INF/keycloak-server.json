@@ -78,11 +78,6 @@
         "provider": "default",
         "default": {
             "dataSource":"spring/datasource",
-            "url": "${env.KEYCLOAK_DATABASE_URL:jdbc:h2:./target/keycloak}",
-            "driver": "${keycloak.connectionsJpa.driver:org.h2.Driver}",
-            "driverDialect": "${keycloak.connectionsJpa.driverDialect:}",
-            "user": "${keycloak.connectionsJpa.user:sa}",
-            "password": "${keycloak.connectionsJpa.password:}",
             "initializeEmpty": true,
             "migrationStrategy": "update",
             "showSql": "${keycloak.connectionsJpa.showSql:false}",

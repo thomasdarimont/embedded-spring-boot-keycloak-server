@@ -2,6 +2,11 @@ spring:
   datasource:
     username: sa
     url: jdbc:h2:./data/keycloak;DB_CLOSE_ON_EXIT=FALSE
+    hikari:
+      maximum-pool-size: 25
+      minimum-idle: 1
+
+
 
 server:
   port: 8080
@@ -13,3 +18,4 @@ resteasy:
 keycloak:
   server:
     contextPath: /auth
+

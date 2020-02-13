@@ -15,7 +15,7 @@
   },
   "eventsListener": {
     "jboss-logging": {
-      "success-level": "debug",
+      "success-level": "info",
       "error-level": "warn"
     }
   },

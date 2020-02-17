@@ -1,5 +1,7 @@
 package com.github.thomasdarimont.keycloak.embedded;
 
+import lombok.extern.jbosslog.JBossLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -10,6 +12,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 
+@JBossLog
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
 @EnableConfigurationProperties(KeycloakProperties.class)
 @ServletComponentScan
@@ -27,7 +30,7 @@ public class EmbeddedKeycloakServer {
             Integer port = serverProperties.getPort();
             String keycloakContextPath = keycloakProperties.getServer().getContextPath();
 
-            System.out.printf("Embedded Keycloak started: http://localhost:%d%s to use keycloak%n", port, keycloakContextPath);
+            log.infof("Embedded Keycloak started: Browse to <http://localhost:%d%s> to use keycloak%n", port, keycloakContextPath);
         };
     }
 }

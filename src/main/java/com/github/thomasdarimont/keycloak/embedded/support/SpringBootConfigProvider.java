@@ -18,20 +18,7 @@ public class SpringBootConfigProvider implements Config.ConfigProvider {
 
     @Override
     public String getProvider(String spi) {
-
-        Object o = keycloakProperties.get(spi);
-
-        if (!(o instanceof Map)) {
-            return null;
-        }
-
-        Map<String, Object> spiMap = (Map<String, Object>) o;
-        Object provider = spiMap.get("provider");
-        if (provider == null) {
-            return null;
-        }
-
-        return String.valueOf(provider);
+        return scope(spi).get("provider");
     }
 
     @Override

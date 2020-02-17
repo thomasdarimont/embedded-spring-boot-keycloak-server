@@ -5,7 +5,7 @@
 
     <groupId>de.tdlabs</groupId>
     <artifactId>spring-boot-keycloak-server-example</artifactId>
-    <version>0.1.802.0.BUILD-SNAPSHOT</version>
+    <version>0.2.900.0.BUILD-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-boot-keycloak-server</name>
@@ -23,7 +23,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <keycloak.version>8.0.2</keycloak.version>
+        <keycloak.version>9.0.0</keycloak.version>
         <resteasy.version>3.9.1.Final</resteasy.version>
         <infinispan.version>9.4.16.Final</infinispan.version>
     </properties>
@@ -177,6 +177,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

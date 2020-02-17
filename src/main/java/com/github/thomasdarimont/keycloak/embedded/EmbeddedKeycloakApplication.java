@@ -1,6 +1,7 @@
-package de.tdlabs.examples.keycloak;
+package com.github.thomasdarimont.keycloak.embedded;
 
-import de.tdlabs.examples.keycloak.KeycloakServerProperties.AdminUser;
+import com.github.thomasdarimont.keycloak.embedded.KeycloakProperties.AdminUser;
+import org.keycloak.Config;
 import org.keycloak.common.util.Resteasy;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.services.managers.ApplianceBootstrap;
@@ -14,19 +15,21 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
-/**
- * Created by tom on 12.06.16.
- */
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKeycloakApplication.class);
 
-    static KeycloakServerProperties keycloakServerProperties;
+    static KeycloakProperties keycloakProperties;
+    static Config.ConfigProvider configProvider;
 
     public EmbeddedKeycloakApplication(@Context ServletContext context) {
 
         Resteasy.pushContext(ServletContext.class, augmentToRedirectContextPath(context));
         tryCreateMasterRealmAdminUser();
+    }
+
+    protected void loadConfig() {
+        Config.init(configProvider);
     }
 
     private void tryCreateMasterRealmAdminUser() {
@@ -35,7 +38,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
         ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
 
-        AdminUser admin = keycloakServerProperties.getAdminUser();
+        AdminUser admin = keycloakProperties.getAdminUser();
 
         try {
             session.getTransactionManager().begin();
@@ -53,12 +56,12 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
     private static ServletContext augmentToRedirectContextPath(ServletContext servletContext) {
 
         ClassLoader classLoader = servletContext.getClassLoader();
-        Class[] interfaces = {ServletContext.class};
+        Class<?>[] interfaces = {ServletContext.class};
 
         InvocationHandler invocationHandler = (proxy, method, args) -> {
 
             if ("getContextPath".equals(method.getName())) {
-                return keycloakServerProperties.getContextPath();
+                return keycloakProperties.getServer().getContextPath();
             }
 
             if ("getInitParameter".equals(method.getName()) && args.length == 1 && "keycloak.embedded".equals(args[0])) {
@@ -70,6 +73,6 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
             return method.invoke(servletContext, args);
         };
 
-        return ServletContext.class.cast(Proxy.newProxyInstance(classLoader, interfaces, invocationHandler));
+        return (ServletContext) Proxy.newProxyInstance(classLoader, interfaces, invocationHandler);
     }
 }

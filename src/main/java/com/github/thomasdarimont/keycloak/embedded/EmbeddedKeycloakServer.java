@@ -1,4 +1,4 @@
-package de.tdlabs.examples.keycloak;
+package com.github.thomasdarimont.keycloak.embedded;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,21 +11,21 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
-@EnableConfigurationProperties(KeycloakServerProperties.class)
+@EnableConfigurationProperties(KeycloakProperties.class)
 @ServletComponentScan
-public class EmbeddedKeycloakApp {
+public class EmbeddedKeycloakServer {
 
     public static void main(String[] args) {
-        SpringApplication.run(EmbeddedKeycloakApp.class, args);
+        SpringApplication.run(EmbeddedKeycloakServer.class, args);
     }
 
     @Bean
-    ApplicationListener<ApplicationReadyEvent> onApplicationReadyEventListener(ServerProperties serverProperties, KeycloakServerProperties keycloakServerProperties) {
+    ApplicationListener<ApplicationReadyEvent> onApplicationReadyEventListener(ServerProperties serverProperties, KeycloakProperties keycloakProperties) {
 
         return (evt) -> {
 
             Integer port = serverProperties.getPort();
-            String keycloakContextPath = keycloakServerProperties.getContextPath();
+            String keycloakContextPath = keycloakProperties.getServer().getContextPath();
 
             System.out.printf("Embedded Keycloak started: http://localhost:%d%s to use keycloak%n", port, keycloakContextPath);
         };

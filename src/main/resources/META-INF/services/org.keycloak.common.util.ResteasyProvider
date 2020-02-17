@@ -1,1 +1,1 @@
-de.tdlabs.examples.keycloak.support.Resteasy3Provider
+com.github.thomasdarimont.keycloak.embedded.support.Resteasy3Provider

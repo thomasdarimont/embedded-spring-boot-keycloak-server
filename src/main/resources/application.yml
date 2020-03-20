@@ -14,10 +14,22 @@ resteasy:
     async_job_service_enabled: true
 
 keycloak:
-  server:
-    contextPath: "/auth"
+  custom:
+    server:
+      contextPath: "/auth"
+
     infinispan:
       configLocation: "classpath:infinispan-cluster.xml"
+
+    adminUser:
+      username: admin
+      password: admin
+
+    migration:
+      importProvider: singleFile
+      importLocation: keycloak-realm-config.json
+    # -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
+    # -Dkeycloak.migration.strategy=IGNORE_EXISTING
 
   hostname:
     provider: "default"
@@ -109,8 +121,7 @@ keycloak:
 
   "login-protocol":
     "saml":
-      "knownProtocols": ["http=${server.port}"]
-#        - "https=${server.port}"
+      "knownProtocols": ["http=${server.port}", "https=${server.port}"]
 
   "x509cert-lookup":
     provider: "default"

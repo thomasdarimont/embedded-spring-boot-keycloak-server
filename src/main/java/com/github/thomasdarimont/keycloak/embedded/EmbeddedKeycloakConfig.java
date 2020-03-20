@@ -3,6 +3,7 @@ package com.github.thomasdarimont.keycloak.embedded;
 import com.github.thomasdarimont.keycloak.embedded.support.InfinispanCacheManagerProvider;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatform;
+import lombok.RequiredArgsConstructor;
 import org.infinispan.configuration.parsing.ConfigurationBuilderHolder;
 import org.infinispan.configuration.parsing.ParserRegistry;
 import org.infinispan.manager.DefaultCacheManager;
@@ -10,13 +11,11 @@ import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.services.filters.KeycloakSessionServletFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.Resource;
 
 import javax.naming.CompositeName;
 import javax.naming.InitialContext;
@@ -28,7 +27,12 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 
 @Configuration
+@RequiredArgsConstructor
 class EmbeddedKeycloakConfig {
+
+    private final KeycloakProperties keycloakProperties;
+
+    private final KeycloakCustomProperties customProperties;
 
     @Bean
     @Lazy
@@ -42,16 +46,18 @@ class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    DefaultCacheManager keycloakInfinispanCacheManager(@Value("${keycloak.server.infinispan.configLocation}") Resource configLocation) throws Exception {
+    DefaultCacheManager keycloakInfinispanCacheManager() throws Exception {
 
-        try (InputStream inputStream = configLocation.getInputStream()) {
+        KeycloakCustomProperties.Infinispan infinispan = customProperties.getInfinispan();
+        try (InputStream inputStream = infinispan.getConfigLocation().getInputStream()) {
             ConfigurationBuilderHolder builder = new ParserRegistry().parse(inputStream);
             return new DefaultCacheManager(builder, true);
         }
     }
 
     @Autowired
-    void mockJndiEnvironment(DataSource dataSource, DefaultCacheManager infinispanCacheManager, SpringBootPlatform springBootPlatform) throws NamingException {
+    void mockJndiEnvironment(DataSource dataSource, DefaultCacheManager infinispanCacheManager) throws NamingException {
+
         NamingManager.setInitialContextFactoryBuilder((env) -> (environment) -> new InitialContext() {
 
             @Override
@@ -86,17 +92,20 @@ class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(KeycloakProperties keycloakProperties, SpringBootConfigProvider configProvider) {
+    ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(SpringBootConfigProvider configProvider) {
 
         //FIXME: hack to propagate Spring Boot Properties to Keycloak Application
         EmbeddedKeycloakApplication.keycloakProperties = keycloakProperties;
+
+        //FIXME: hack to propagate Spring Boot Properties to Keycloak Application
+        EmbeddedKeycloakApplication.customProperties = customProperties;
 
         //FIXME: hack to propagate Spring Boot ConfigProvider to Keycloak Application
         EmbeddedKeycloakApplication.configProvider = configProvider;
 
         ServletRegistrationBean<HttpServlet30Dispatcher> servlet = new ServletRegistrationBean<>(new HttpServlet30Dispatcher());
         servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
-        String keycloakContextPath = keycloakProperties.getServer().getContextPath();
+        String keycloakContextPath = customProperties.getServer().getContextPath();
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, keycloakContextPath);
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "true");
         servlet.addUrlMappings(keycloakContextPath + "/*");
@@ -112,7 +121,7 @@ class EmbeddedKeycloakConfig {
         FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");
         filter.setFilter(new KeycloakSessionServletFilter());
-        filter.addUrlPatterns(keycloakProperties.getServer().getContextPath() + "/*");
+        filter.addUrlPatterns(customProperties.getServer().getContextPath() + "/*");
 
         return filter;
     }

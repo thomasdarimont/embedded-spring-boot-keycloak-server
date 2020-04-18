@@ -9,15 +9,17 @@ Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environ
 
 # Build
 
-To start the embedded Keycloak Server, just build the project with: 
+To build the embedded Spring Boot Keycloak Server, run the following command:
+Note: we use the `install` goal to install the artifacts into the local maven repository  
+in order to be able to consume the artifacts in our customization project.   
 ```
-mvn package
+mvn clean install
 ```
 
 # Run
-To run the embedded keycloak server app, you can execute the following command:
+To run the plain embedded keycloak server app, you can execute the following command:
 ```
-java -jar target/*.jar
+java -jar embedded-spring-boot-keycloak-server-plain/target/*.jar
 ```
 
 The embedded Keycloak server is now reachable via http://localhost:8080/auth
@@ -25,4 +27,4 @@ The embedded Keycloak server is now reachable via http://localhost:8080/auth
 # Configuration
 
 The Keycloak server part can be configured via Spring Boot configuration mechanism.
-See `application.yml` for a list of configurable settings.
+See `embedded-spring-boot-keycloak-server-plain/application.yml` for a list of configurable settings.

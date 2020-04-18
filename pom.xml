@@ -3,14 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.tdlabs</groupId>
-    <artifactId>spring-boot-keycloak-server-example</artifactId>
-    <version>0.1.902.0.BUILD-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>spring-boot-keycloak-server</name>
-    <description>Spring Boot powered Keycloak Server</description>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,12 +10,27 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <groupId>com.github.thomasdarimont.keycloak</groupId>
+    <artifactId>embedded-spring-boot-keycloak-server</artifactId>
+    <version>${revision}</version>
+
+    <packaging>jar</packaging>
+
+    <name>embedded-spring-boot-keycloak-server</name>
+    <description>Embedded Keycloak Server</description>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+
         <keycloak.version>9.0.3</keycloak.version>
+        <server.version>1.0.0</server.version>
+        <qualifier>BUILD-SNAPSHOT</qualifier>
+        <revision>${keycloak.version}.${server.version}.${qualifier}</revision>
+
         <resteasy.version>3.11.2.Final</resteasy.version>
         <infinispan.version>9.4.19.Final</infinispan.version>
     </properties>

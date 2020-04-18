@@ -6,4 +6,4 @@
                 |___/
 
 Spring Boot Version: ${spring-boot.formatted-version}
-Keycloak Version: ${keycloak.version}
+Keycloak Version: (v@keycloak.version@)

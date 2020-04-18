@@ -11,13 +11,12 @@
     </parent>
 
     <groupId>com.github.thomasdarimont.keycloak</groupId>
-    <artifactId>embedded-spring-boot-keycloak-server</artifactId>
-    <version>${revision}</version>
+    <artifactId>embedded-spring-boot-keycloak-server-parent</artifactId>
+    <version>9.0.3.1.0.0.BUILD-SNAPSHOT</version>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <name>embedded-spring-boot-keycloak-server</name>
-    <description>Embedded Keycloak Server</description>
+    <description>Embedded Keycloak Server Parent</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,13 +26,24 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <keycloak.version>9.0.3</keycloak.version>
-        <server.version>1.0.0</server.version>
-        <qualifier>BUILD-SNAPSHOT</qualifier>
-        <revision>${keycloak.version}.${server.version}.${qualifier}</revision>
+        <!--        <server.version>1.0.0</server.version>-->
+        <!--        <qualifier>BUILD-SNAPSHOT</qualifier>-->
+        <!--        <revision>${keycloak.version}.${server.version}.${qualifier}</revision>-->
 
         <resteasy.version>3.11.2.Final</resteasy.version>
         <infinispan.version>9.4.19.Final</infinispan.version>
+
+        <auto-service.version>1.0-rc6</auto-service.version>
     </properties>
+
+    <modules>
+        <module>embedded-spring-boot-keycloak-server-support</module>
+        <module>embedded-spring-boot-keycloak-server-plain</module>
+
+        <!--
+        <module>embedded-spring-boot-keycloak-server-custom</module>
+        -->
+    </modules>
 
     <dependencies>
 
@@ -194,6 +204,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>${auto-service.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
@@ -209,20 +226,25 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${git-commit-id-plugin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>git-commit-id-on-validate-revision</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
                 <configuration>
-                    <excludeDevtools>true</excludeDevtools>
-                    <requiresUnpack>
-                        <dependency>
-                            <groupId>org.keycloak</groupId>
-                            <artifactId>keycloak-connections-jpa</artifactId>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.keycloak</groupId>
-                            <artifactId>keycloak-model-jpa</artifactId>
-                        </dependency>
-                    </requiresUnpack>
+                    <skipPoms>false</skipPoms>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <!-- enables other plugins to use git properties -->
+                    <injectAllReactorProjects>true</injectAllReactorProjects>
                 </configuration>
             </plugin>
         </plugins>
@@ -274,5 +296,4 @@
             </dependencies>
         </profile>
     </profiles>
-
 </project>

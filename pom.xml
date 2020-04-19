@@ -31,7 +31,7 @@
         <!--        <revision>${keycloak.version}.${server.version}.${qualifier}</revision>-->
 
         <resteasy.version>4.5.3.Final</resteasy.version>
-        <infinispan.version>9.4.19.Final</infinispan.version>
+        <infinispan.version>10.0.0.Final</infinispan.version>
 
         <auto-service.version>1.0-rc6</auto-service.version>
     </properties>

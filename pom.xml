@@ -30,7 +30,7 @@
         <!--        <qualifier>BUILD-SNAPSHOT</qualifier>-->
         <!--        <revision>${keycloak.version}.${server.version}.${qualifier}</revision>-->
 
-        <resteasy.version>3.11.2.Final</resteasy.version>
+        <resteasy.version>4.5.3.Final</resteasy.version>
         <infinispan.version>9.4.19.Final</infinispan.version>
 
         <auto-service.version>1.0-rc6</auto-service.version>
@@ -47,9 +47,24 @@
 
     <dependencies>
 
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
 
         <dependency>
@@ -92,6 +107,12 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-multipart-provider</artifactId>
             <version>${resteasy.version}</version>
         </dependency>
 
@@ -141,6 +162,14 @@
                 <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxrs</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-multipart-provider</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

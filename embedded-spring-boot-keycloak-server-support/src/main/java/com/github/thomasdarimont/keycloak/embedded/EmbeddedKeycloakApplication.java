@@ -6,19 +6,24 @@ import org.keycloak.common.util.Resteasy;
 import org.keycloak.exportimport.ExportImportConfig;
 import org.keycloak.exportimport.ExportImportManager;
 import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.KeycloakTransactionManager;
+import org.keycloak.services.ServicesLogger;
 import org.keycloak.services.managers.ApplianceBootstrap;
 import org.keycloak.services.resources.KeycloakApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
@@ -43,22 +48,35 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
     private void tryCreateMasterRealmAdminUser() {
 
-        KeycloakSession session = getSessionFactory().create();
-
-        ApplianceBootstrap applianceBootstrap = new ApplianceBootstrap(session);
-
-        AdminUser admin = customProperties.getAdminUser();
-
-        try {
-            session.getTransactionManager().begin();
-            applianceBootstrap.createMasterRealmUser(admin.getUsername(), admin.getPassword());
-            session.getTransactionManager().commit();
-        } catch (Exception ex) {
-            LOG.warn("Couldn't create keycloak master admin user: {}", ex.getMessage());
-            session.getTransactionManager().rollback();
+        if (!customProperties.getAdminUser().isCreateAdminUserEnabled()) {
+            LOG.warn("Skipping creation of keycloak master adminUser.");
+            return;
         }
 
-        session.close();
+        AdminUser adminUser = customProperties.getAdminUser();
+
+        if (StringUtils.isEmpty(adminUser.getUsername()) || StringUtils.isEmpty(adminUser.getPassword())) {
+            return;
+        }
+
+        KeycloakSession session = getSessionFactory().create();
+        KeycloakTransactionManager transaction = session.getTransactionManager();
+        try {
+            transaction.begin();
+
+            new ApplianceBootstrap(session).createMasterRealmUser(adminUser.getUsername(), adminUser.getPassword());
+            ServicesLogger.LOGGER.addUserSuccess(adminUser.getUsername(), Config.getAdminRealm());
+
+            transaction.commit();
+        } catch (IllegalStateException e) {
+            transaction.rollback();
+            ServicesLogger.LOGGER.addUserFailedUserExists(adminUser.getUsername(), Config.getAdminRealm());
+        } catch (Throwable t) {
+            transaction.rollback();
+            ServicesLogger.LOGGER.addUserFailed(t, adminUser.getUsername(), Config.getAdminRealm());
+        } finally {
+            session.close();
+        }
     }
 
     private void tryImportRealm() {
@@ -102,19 +120,29 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         Class<?>[] interfaces = {ServletContext.class};
         KeycloakCustomProperties.Server server = customProperties.getServer();
 
-        InvocationHandler invocationHandler = (proxy, method, args) -> {
+        var keycloakServletContextInitParameters = new HashMap<>();
+        keycloakServletContextInitParameters.put("resteasy.allowGzip", "true");
+        keycloakServletContextInitParameters.put("keycloak.embedded", "true");
+        keycloakServletContextInitParameters.put("resteasy.document.expand.entity.references", "false");
+        keycloakServletContextInitParameters.put("resteasy.document.secure.processing.feature", "true");
+        keycloakServletContextInitParameters.put("resteasy.document.secure.disableDTDs", "true");
 
-            if ("getContextPath".equals(method.getName())) {
-                return server.getContextPath();
+        InvocationHandler invocationHandler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+                if ("getContextPath".equals(method.getName())) {
+                    return server.getContextPath();
+                }
+
+                if ("getInitParameter".equals(method.getName()) && args.length == 1 && keycloakServletContextInitParameters.containsKey(args[0])) {
+                    return keycloakServletContextInitParameters.get(args[0]);
+                }
+
+                LOG.info("Invoke on ServletContext: method=[{}] args=[{}]", method.getName(), Arrays.toString(args));
+
+                return method.invoke(servletContext, args);
             }
-
-            if ("getInitParameter".equals(method.getName()) && args.length == 1 && "keycloak.embedded".equals(args[0])) {
-                return "true";
-            }
-
-            LOG.info("Invoke on ServletContext: method=[{}] args=[{}]", method.getName(), Arrays.toString(args));
-
-            return method.invoke(servletContext, args);
         };
 
         return (ServletContext) Proxy.newProxyInstance(classLoader, interfaces, invocationHandler);

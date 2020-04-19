@@ -61,6 +61,8 @@ to join a cluster. If you want another JGroups discovery mechanism like, e.g. dn
 then you just need to adapt the `jgroups.xml` configuration file. Note that some discovery strategies like
 kube_ping need additional jars in the classpath.
 
+> Note, that you need to use a centralized database if you want to really leverage a clustered embedded Keycloak.
+
 To see the clustering in action, you can run the following command on two nodes:
 
 > Run on Node1:

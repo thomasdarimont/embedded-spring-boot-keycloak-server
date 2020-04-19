@@ -45,6 +45,8 @@ public class KeycloakCustomProperties {
     @Setter
     public class AdminUser {
 
+        boolean createAdminUserEnabled;
+
         String username;
 
         String password;

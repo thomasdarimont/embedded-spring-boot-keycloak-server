@@ -107,7 +107,7 @@ class EmbeddedKeycloakConfig {
         servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
         String keycloakContextPath = customProperties.getServer().getContextPath();
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, keycloakContextPath);
-        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "true");
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "false");
         servlet.addUrlMappings(keycloakContextPath + "/*");
         servlet.setLoadOnStartup(1);
         servlet.setAsyncSupported(true);
@@ -116,7 +116,7 @@ class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement(KeycloakProperties keycloakProperties) {
+    FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement() {
 
         FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");

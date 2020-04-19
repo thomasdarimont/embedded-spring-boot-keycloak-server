@@ -1,4 +1,4 @@
-package demo.keycloak.auth.demoauth;
+package custom.keycloak.auth.demoauth;
 
 import com.google.auto.service.AutoService;
 import org.keycloak.Config;

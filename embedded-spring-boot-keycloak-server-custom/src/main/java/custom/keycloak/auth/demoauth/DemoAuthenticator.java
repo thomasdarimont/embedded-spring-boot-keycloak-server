@@ -1,4 +1,4 @@
-package demo.keycloak.auth.demoauth;
+package custom.keycloak.auth.demoauth;
 
 import lombok.extern.jbosslog.JBossLog;
 import org.keycloak.authentication.AuthenticationFlowContext;

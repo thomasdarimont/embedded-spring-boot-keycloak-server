@@ -19,11 +19,12 @@ keycloak:
       contextPath: "/auth"
 
     infinispan:
-      configLocation: "classpath:infinispan-cluster.xml"
+      configLocation: "classpath:infinispan.xml"
 
     adminUser:
       username: admin
       password: admin
+      create-admin-user-enabled: true
 
     migration:
       importProvider: singleFile

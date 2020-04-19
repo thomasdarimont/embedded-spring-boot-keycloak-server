@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackageClasses = EmbeddedKeycloakServer.class)
 public class DemoMain {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(DemoMain.class, args);
     }
 }

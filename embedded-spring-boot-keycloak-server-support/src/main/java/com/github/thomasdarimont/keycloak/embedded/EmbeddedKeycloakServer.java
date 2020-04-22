@@ -22,8 +22,6 @@ public class EmbeddedKeycloakServer {
 
     private final ServerProperties serverProperties;
 
-    private final KeycloakCustomProperties customProperties;
-
     @Bean
     ApplicationListener<ApplicationReadyEvent> onApplicationReadyEventListener() {
 
@@ -36,9 +34,8 @@ public class EmbeddedKeycloakServer {
             log.infof("Enabled Keycloak Features (Disabled): %s", Profile.getDisabledFeatures());
 
             Integer port = serverProperties.getPort();
-            String keycloakContextPath = customProperties.getServer().getContextPath();
 
-            log.infof("Embedded Keycloak started: Browse to <http://localhost:%d%s> to use keycloak%n", port, keycloakContextPath);
+            log.infof("Embedded Keycloak started: Browse to <http://localhost:%d%s> to use keycloak%n", port, serverProperties.getServlet().getContextPath());
         };
     }
 }

@@ -28,25 +28,23 @@ import java.io.InputStream;
 
 @Configuration
 @RequiredArgsConstructor
-class EmbeddedKeycloakConfig {
-
-    private final KeycloakProperties keycloakProperties;
+public class EmbeddedKeycloakConfig {
 
     private final KeycloakCustomProperties customProperties;
 
     @Bean
     @Lazy
-    SpringBootPlatform springBootPlatform() {
+    protected SpringBootPlatform springBootPlatform() {
         return new SpringBootPlatform();
     }
 
     @Bean
-    SpringBootConfigProvider springBootConfigProvider(KeycloakProperties keycloakProperties) {
+    protected SpringBootConfigProvider springBootConfigProvider(KeycloakProperties keycloakProperties) {
         return new SpringBootConfigProvider(keycloakProperties);
     }
 
     @Bean
-    DefaultCacheManager keycloakInfinispanCacheManager() throws Exception {
+    protected DefaultCacheManager keycloakInfinispanCacheManager() throws Exception {
 
         KeycloakCustomProperties.Infinispan infinispan = customProperties.getInfinispan();
         try (InputStream inputStream = infinispan.getConfigLocation().getInputStream()) {
@@ -56,7 +54,7 @@ class EmbeddedKeycloakConfig {
     }
 
     @Autowired
-    void mockJndiEnvironment(DataSource dataSource, DefaultCacheManager infinispanCacheManager) throws NamingException {
+    protected void mockJndiEnvironment(DataSource dataSource, DefaultCacheManager infinispanCacheManager) throws NamingException {
 
         NamingManager.setInitialContextFactoryBuilder((env) -> (environment) -> new InitialContext() {
 
@@ -92,23 +90,23 @@ class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(SpringBootConfigProvider configProvider) {
-
-        //FIXME: hack to propagate Spring Boot Properties to Keycloak Application
-        EmbeddedKeycloakApplication.keycloakProperties = keycloakProperties;
-
-        //FIXME: hack to propagate Spring Boot Properties to Keycloak Application
-        EmbeddedKeycloakApplication.customProperties = customProperties;
+    protected ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(SpringBootConfigProvider configProvider) {
 
         //FIXME: hack to propagate Spring Boot ConfigProvider to Keycloak Application
         EmbeddedKeycloakApplication.configProvider = configProvider;
 
         ServletRegistrationBean<HttpServlet30Dispatcher> servlet = new ServletRegistrationBean<>(new HttpServlet30Dispatcher());
         servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
-        String keycloakContextPath = customProperties.getServer().getContextPath();
-        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, keycloakContextPath);
+
+        servlet.addInitParameter("resteasy.allowGzip", "true");
+        servlet.addInitParameter("keycloak.embedded", "true");
+        servlet.addInitParameter("resteasy.document.expand.entity.references", "false");
+        servlet.addInitParameter("resteasy.document.secure.processing.feature", "true");
+        servlet.addInitParameter("resteasy.document.secure.disableDTDs", "true");
+
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, "/");
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "false");
-        servlet.addUrlMappings(keycloakContextPath + "/*");
+        servlet.addUrlMappings("/*");
         servlet.setLoadOnStartup(1);
         servlet.setAsyncSupported(true);
 
@@ -116,12 +114,12 @@ class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement() {
+    protected FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement() {
 
         FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");
         filter.setFilter(new KeycloakSessionServletFilter());
-        filter.addUrlPatterns(customProperties.getServer().getContextPath() + "/*");
+        filter.addUrlPatterns("/*");
 
         return filter;
     }

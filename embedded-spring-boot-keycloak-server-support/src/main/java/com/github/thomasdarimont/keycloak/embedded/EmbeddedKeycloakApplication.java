@@ -2,7 +2,6 @@ package com.github.thomasdarimont.keycloak.embedded;
 
 import com.github.thomasdarimont.keycloak.embedded.KeycloakCustomProperties.AdminUser;
 import org.keycloak.Config;
-import org.keycloak.common.util.Resteasy;
 import org.keycloak.exportimport.ExportImportConfig;
 import org.keycloak.exportimport.ExportImportManager;
 import org.keycloak.models.KeycloakSession;
@@ -14,33 +13,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKeycloakApplication.class);
 
-    static KeycloakProperties keycloakProperties;
-
-    static KeycloakCustomProperties customProperties;
+    private final KeycloakCustomProperties customProperties;
 
     static Config.ConfigProvider configProvider;
 
     public EmbeddedKeycloakApplication(@Context ServletContext context) {
-        Resteasy.pushContext(ServletContext.class, augmentToRedirectContextPath(context));
+
+        WebApplicationContext webAppContext = WebApplicationContextUtils.getWebApplicationContext(context);
+        this.customProperties = webAppContext.getBean(KeycloakCustomProperties.class);
     }
 
     @Override
     protected ExportImportManager migrateAndBootstrap() {
+
         ExportImportManager exportImportManager = super.migrateAndBootstrap();
 
         tryCreateMasterRealmAdminUser();
@@ -118,40 +115,5 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         session.close();
 
         LOG.info("Keycloak realm configuration import finished.");
-    }
-
-
-    private static ServletContext augmentToRedirectContextPath(ServletContext servletContext) {
-
-        ClassLoader classLoader = servletContext.getClassLoader();
-        Class<?>[] interfaces = {ServletContext.class};
-        KeycloakCustomProperties.Server server = customProperties.getServer();
-
-        var keycloakServletContextInitParameters = new HashMap<>();
-        keycloakServletContextInitParameters.put("resteasy.allowGzip", "true");
-        keycloakServletContextInitParameters.put("keycloak.embedded", "true");
-        keycloakServletContextInitParameters.put("resteasy.document.expand.entity.references", "false");
-        keycloakServletContextInitParameters.put("resteasy.document.secure.processing.feature", "true");
-        keycloakServletContextInitParameters.put("resteasy.document.secure.disableDTDs", "true");
-
-        InvocationHandler invocationHandler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-                if ("getContextPath".equals(method.getName())) {
-                    return server.getContextPath();
-                }
-
-                if ("getInitParameter".equals(method.getName()) && args.length == 1 && keycloakServletContextInitParameters.containsKey(args[0])) {
-                    return keycloakServletContextInitParameters.get(args[0]);
-                }
-
-                LOG.info("Invoke on ServletContext: method=[{}] args=[{}]", method.getName(), Arrays.toString(args));
-
-                return method.invoke(servletContext, args);
-            }
-        };
-
-        return (ServletContext) Proxy.newProxyInstance(classLoader, interfaces, invocationHandler);
     }
 }

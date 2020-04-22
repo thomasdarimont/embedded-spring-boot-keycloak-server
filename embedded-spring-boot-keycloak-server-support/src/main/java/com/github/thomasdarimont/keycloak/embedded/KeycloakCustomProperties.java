@@ -10,8 +10,6 @@ import org.springframework.core.io.Resource;
 @ConfigurationProperties(prefix = "keycloak.custom")
 public class KeycloakCustomProperties {
 
-    Server server = new Server();
-
     AdminUser adminUser = new AdminUser();
 
     Migration migration = new Migration();
@@ -25,13 +23,6 @@ public class KeycloakCustomProperties {
         Resource importLocation;
 
         String importProvider;
-    }
-
-    @Getter
-    @Setter
-    public class Server {
-
-        String contextPath;
     }
 
     @Getter

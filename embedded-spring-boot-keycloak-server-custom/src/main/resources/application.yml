@@ -8,6 +8,8 @@ spring:
 
 server:
   port: 8080
+  servlet:
+    context-path: "/auth"
 
 resteasy:
   deployment:
@@ -15,8 +17,6 @@ resteasy:
 
 keycloak:
   custom:
-    server:
-      contextPath: "/auth"
 
     infinispan:
       configLocation: "classpath:infinispan.xml"

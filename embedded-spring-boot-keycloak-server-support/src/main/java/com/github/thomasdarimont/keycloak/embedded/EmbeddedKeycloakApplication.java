@@ -36,17 +36,24 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
     static Config.ConfigProvider configProvider;
 
     public EmbeddedKeycloakApplication(@Context ServletContext context) {
-
         Resteasy.pushContext(ServletContext.class, augmentToRedirectContextPath(context));
+    }
+
+    @Override
+    protected ExportImportManager migrateAndBootstrap() {
+        ExportImportManager exportImportManager = super.migrateAndBootstrap();
+
         tryCreateMasterRealmAdminUser();
         tryImportRealm();
+
+        return exportImportManager;
     }
 
     protected void loadConfig() {
         Config.init(configProvider);
     }
 
-    private void tryCreateMasterRealmAdminUser() {
+    protected void tryCreateMasterRealmAdminUser() {
 
         if (!customProperties.getAdminUser().isCreateAdminUserEnabled()) {
             LOG.warn("Skipping creation of keycloak master adminUser.");
@@ -79,7 +86,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         }
     }
 
-    private void tryImportRealm() {
+    protected void tryImportRealm() {
 
         KeycloakCustomProperties.Migration imex = customProperties.getMigration();
         Resource importLocation = imex.getImportLocation();

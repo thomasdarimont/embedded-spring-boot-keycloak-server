@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.thomasdarimont.keycloak</groupId>
         <artifactId>embedded-spring-boot-keycloak-server-parent</artifactId>
-        <version>9.0.3.1.0.0.BUILD-SNAPSHOT</version>
+        <version>9.0.3.2.0.0.BUILD-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.github.thomasdarimont.keycloak</groupId>
             <artifactId>embedded-spring-boot-keycloak-server-support</artifactId>
-            <version>9.0.3.1.0.0.BUILD-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
 

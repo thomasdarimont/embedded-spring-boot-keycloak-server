@@ -10,15 +10,18 @@ Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environ
 
 # Modules
 
-## embedded-spring-boot-keycloak-server-support
+## embedded-keycloak-server-spring-boot-support
 This module contains the necessary bits to embed a Keycloak server
 in a Spring Boot app.
 
-## embedded-spring-boot-keycloak-server-plain
+## embedded-keycloak-server-spring-boot-starter
+This module contains a Spring Boot starter for an Embedded Keycloak Server. 
+
+## embedded-keycloak-server-plain
 This module contains the raw embed a Keycloak server
 in a Spring Boot app without additional customizations.
 
-## embedded-spring-boot-keycloak-server-custom
+## embedded-keycloak-server-custom
 This module contains the embed a Keycloak server in a Spring Boot app with additional customizations.
 
 # Build
@@ -33,7 +36,7 @@ mvn clean install
 # Run
 To run the plain embedded keycloak server app, you can execute the following command:
 ```
-java -jar embedded-spring-boot-keycloak-server-plain/target/*.jar
+java -jar embedded-keycloak-server-plain/target/*.jar
 ```
 
 The embedded Keycloak server is now reachable via http://localhost:8080/auth
@@ -41,12 +44,12 @@ The embedded Keycloak server is now reachable via http://localhost:8080/auth
 # Configuration
 
 The Keycloak server part can be configured via Spring Boot configuration mechanism.  
-See `embedded-spring-boot-keycloak-server-plain/application.yml` for a list of configurable settings.
+See `embedded-keycloak-server-plain/application.yml` for a list of configurable settings.
 
 # Customizing
 
-The `embedded-spring-boot-keycloak-server-custom` example project demonstrates how one can use the  
-`embedded-spring-boot-keycloak-server-support` library to create an embedded Keycloak server with additional   
+The `embedded-keycloak-server-custom` example project demonstrates how one can use the  
+`embedded-keycloak-server-spring-boot-starter` library to create an embedded Keycloak server with additional   
 customizations like Keycloak extensions and a custom theme.  
 
 # Clustering

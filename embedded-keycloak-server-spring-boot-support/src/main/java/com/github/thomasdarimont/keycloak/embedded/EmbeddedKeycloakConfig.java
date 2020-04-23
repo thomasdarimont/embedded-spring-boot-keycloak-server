@@ -9,16 +9,13 @@ import org.infinispan.manager.DefaultCacheManager;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.services.filters.KeycloakSessionServletFilter;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 
 import javax.naming.CompositeName;
 import javax.naming.InitialContext;
@@ -53,7 +50,6 @@ public class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     @ConditionalOnMissingBean(name = "keycloakInfinispanCacheManager")
     protected DefaultCacheManager keycloakInfinispanCacheManager(KeycloakCustomProperties customProperties) throws Exception {
 
@@ -68,10 +64,10 @@ public class EmbeddedKeycloakConfig {
 
     @Autowired
     protected void mockJndiEnvironment(
-            ObjectProvider<DataSource> dataSourceProvider,
-            ObjectProvider<DefaultCacheManager> cacheManagerProvider,
-            ObjectProvider<SpringBootConfigProvider> configProvider,
-            ObjectProvider<KeycloakCustomProperties> keycloakCustomProperties
+            DataSource dataSource,
+            DefaultCacheManager cacheManager,
+            SpringBootConfigProvider configProvider,
+            KeycloakCustomProperties keycloakCustomProperties
     ) throws NamingException {
 
         if (NamingManager.hasInitialContextFactoryBuilder()) {
@@ -89,19 +85,19 @@ public class EmbeddedKeycloakConfig {
             public Object lookup(String name) {
 
                 if (JNDI_SPRING_DATASOURCE.equals(name)) {
-                    return dataSourceProvider.getObject();
+                    return dataSource;
                 }
 
                 if (JNDI_CONFIG_PROVIDER.equals(name)) {
-                    return configProvider.getObject();
+                    return configProvider;
                 }
 
                 if (JNDI_CUSTOM_PROPERTIES.equals(name)) {
-                    return keycloakCustomProperties.getObject();
+                    return keycloakCustomProperties;
                 }
 
                 if (InfinispanCacheManagerProvider.JNDI_NAME.equals(name)) {
-                    return cacheManagerProvider.getObject();
+                    return cacheManager;
                 }
 
                 return null;

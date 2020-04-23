@@ -29,7 +29,7 @@
     <UNICAST3 />
     <pbcast.STABLE desired_avg_gossip="50000"
                    max_bytes="4M"/>
-    <pbcast.GMS print_local_addr="true" join_timeout="2000"/>
+    <pbcast.GMS print_local_addr="true" join_timeout="10000"/>
     <UFC max_credits="2M"
          min_threshold="0.4"/>
     <MFC max_credits="2M"

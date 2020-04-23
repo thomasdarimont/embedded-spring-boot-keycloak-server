@@ -10,6 +10,7 @@ import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 public class SpringBootPlatform implements SmartApplicationListener {
 
@@ -21,28 +22,31 @@ public class SpringBootPlatform implements SmartApplicationListener {
     public void onApplicationEvent(ApplicationEvent event) {
 
         if (event instanceof ApplicationReadyEvent) {
-            Runnable startupHook = getPlatformField(Runnable.class, "startupHook");
-            if (startupHook != null) {
-                startupHook.run();
-            }
+            runStartupHook();
         } else if (event instanceof ContextStoppedEvent) {
-            Runnable shutdownHook = getPlatformField(Runnable.class, "shutdownHook");
-            if (shutdownHook != null) {
-                shutdownHook.run();
-            }
+            runShutdownHook();
         }
     }
 
+    protected void runShutdownHook() {
+        getPlatformField(Runnable.class, "shutdownHook").ifPresent(Runnable::run);
+    }
+
+    protected void runStartupHook() {
+        getPlatformField(Runnable.class, "startupHook").ifPresent(Runnable::run);
+    }
+
     // TODO find better way to work around classloader issues
-    private <T> T getPlatformField(Class<T> type, String name) {
+    private <T> Optional<T> getPlatformField(Class<T> type, String name) {
         PlatformProvider p = Platform.getPlatform();
         Field field = ReflectionUtils.findField(p.getClass(), name);
         ReflectionUtils.makeAccessible(field);
-        return type.cast(ReflectionUtils.getField(field, p));
+        return Optional.ofNullable(type.cast(ReflectionUtils.getField(field, p)));
     }
 
     @AutoService(PlatformProvider.class)
     public static class Delegate implements PlatformProvider {
+
         private Runnable startupHook;
 
         private Runnable shutdownHook;

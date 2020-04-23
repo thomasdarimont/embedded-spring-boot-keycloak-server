@@ -3,12 +3,12 @@
     multicasting cannot be used in a network, e.g. because it is disabled (routers discard multicast).
     Note that TCP.bind_addr and TCPPING.initial_hosts should be set, possibly via system properties, e.g.
     -Djgroups.bind_addr=192.168.5.2 and -Djgroups.tcpping.initial_hosts=192.168.5.2[7800]
-    author: Bela Ban
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="urn:org:jgroups"
         xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups.xsd"
         version="${version}">
+
     <TCP bind_port="7800"
          thread_pool.min_threads="0"
          thread_pool.max_threads="20"
@@ -30,10 +30,12 @@
 
     <VERIFY_SUSPECT timeout="1000"/>
 
+    <!--
     <ASYM_ENCRYPT sym_keylength="128"
                   sym_algorithm="AES/ECB/PKCS5Padding"
                   asym_keylength="512"
                   asym_algorithm="RSA"/>
+    -->
 
     <pbcast.NAKACK2 use_mcast_xmit="false"
                     xmit_interval="100"
@@ -52,9 +54,11 @@
                    desired_avg_gossip="5000"
                    max_bytes="1M"/>
 
+    <!--
     <AUTH auth_class="org.jgroups.auth.MD5Token"
           token_hash="SHA"
           auth_value="${jgroups.auth.password:changeme}"/>
+    -->
 
     <pbcast.GMS print_physical_addrs="false"
                 print_local_addr="false"
@@ -64,9 +68,6 @@
     <MFC max_credits="2M"
          min_threshold="0.4"/>
 
-    <FRAG2 frag_size="60K"/>
-
-    <pbcast.STATE_TRANSFER/>
-
+    <FRAG3/>
     <RSVP/>
 </config>

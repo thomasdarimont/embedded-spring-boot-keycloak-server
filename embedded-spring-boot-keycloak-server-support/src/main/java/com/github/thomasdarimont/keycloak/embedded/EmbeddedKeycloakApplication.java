@@ -12,10 +12,10 @@ import org.keycloak.services.resources.KeycloakApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.jndi.JndiTemplate;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.File;
@@ -27,12 +27,13 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
     private final KeycloakCustomProperties customProperties;
 
-    static Config.ConfigProvider configProvider;
-
     public EmbeddedKeycloakApplication(@Context ServletContext context) {
 
-        WebApplicationContext webAppContext = WebApplicationContextUtils.getWebApplicationContext(context);
-        this.customProperties = webAppContext.getBean(KeycloakCustomProperties.class);
+        try {
+            this.customProperties = new JndiTemplate().lookup(EmbeddedKeycloakConfig.JNDI_CUSTOM_PROPERTIES, KeycloakCustomProperties.class);
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -47,7 +48,11 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
     }
 
     protected void loadConfig() {
-        Config.init(configProvider);
+        try {
+            Config.init(new JndiTemplate().lookup(EmbeddedKeycloakConfig.JNDI_CONFIG_PROVIDER, Config.ConfigProvider.class));
+        } catch (NamingException e) {
+            LOG.error("Failed to lookup ConfigProvider from JDNI.", e);
+        }
     }
 
     protected void tryCreateMasterRealmAdminUser() {

@@ -9,7 +9,7 @@
     </jgroups>
 
     <cache-container name="keycloak">
-        <transport stack="jgroups"  lock-timeout="60000"/>
+        <transport stack="jgroups" lock-timeout="60000"/>
         <local-cache name="realms">
             <memory>
                 <object size="10000"/>
@@ -20,30 +20,35 @@
                 <object size="10000"/>
             </memory>
         </local-cache>
-        <distributed-cache name="sessions" owners="1"/>
-        <distributed-cache name="authenticationSessions" owners="1"/>
-        <distributed-cache name="offlineSessions" owners="1"/>
-        <distributed-cache name="clientSessions" owners="1"/>
-        <distributed-cache name="offlineClientSessions" owners="1"/>
-        <distributed-cache name="loginFailures" owners="1"/>
+
         <local-cache name="authorization">
             <memory>
                 <object size="10000"/>
             </memory>
         </local-cache>
-        <replicated-cache name="work"/>
+
         <local-cache name="keys">
             <expiration max-idle="3600000"/>
             <memory>
                 <object size="1000"/>
             </memory>
         </local-cache>
-        <distributed-cache name="actionTokens" owners="2">
+
+        <replicated-cache name="sessions" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+        <replicated-cache name="authenticationSessions" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+        <replicated-cache name="offlineSessions" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+        <replicated-cache name="clientSessions" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+        <replicated-cache name="offlineClientSessions" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+        <replicated-cache name="loginFailures" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+
+        <replicated-cache name="work" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}"/>
+
+        <replicated-cache name="actionTokens" remote-timeout="${infinispan_repl_cache_remote_timeout:10000}">
             <expiration max-idle="-1" interval="300000"/>
             <memory>
                 <object size="-1"/>
             </memory>
-        </distributed-cache>
+        </replicated-cache>
     </cache-container>
 
 </infinispan>

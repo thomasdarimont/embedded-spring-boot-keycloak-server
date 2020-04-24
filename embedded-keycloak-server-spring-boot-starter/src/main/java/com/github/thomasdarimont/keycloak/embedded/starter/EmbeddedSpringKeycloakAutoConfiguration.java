@@ -11,7 +11,4 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({KeycloakProperties.class, KeycloakCustomProperties.class})
 @ComponentScan(basePackageClasses = EmbeddedKeycloakConfig.class)
 public class EmbeddedSpringKeycloakAutoConfiguration {
-    static {
-        System.out.println("fuuuck");
-    }
 }

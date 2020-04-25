@@ -5,7 +5,7 @@
         xmlns="urn:infinispan:config:9.4">
 
     <jgroups>
-        <stack-file name="jgroups" path="jgroups.xml"/>
+        <stack-file name="jgroups" path="${jgroups.configfile:jgroups.xml}"/>
     </jgroups>
 
     <cache-container name="keycloak">

@@ -28,6 +28,7 @@
         <keycloak.version>9.0.3</keycloak.version>
         <resteasy.version>4.5.3.Final</resteasy.version>
         <infinispan.version>9.4.19.Final</infinispan.version>
+        <jgroups.version>4.0.23.Final</jgroups.version>
 
         <auto-service.version>1.0-rc6</auto-service.version>
     </properties>
@@ -111,6 +112,18 @@
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
             <version>${infinispan.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jgroups</groupId>
+                    <artifactId>jgroups</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jgroups</groupId>
+            <artifactId>jgroups</artifactId>
+            <version>${jgroups.version}</version>
         </dependency>
 
         <dependency>

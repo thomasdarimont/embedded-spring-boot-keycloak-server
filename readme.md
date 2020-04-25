@@ -6,7 +6,15 @@ based on [Keycloak](https://www.keycloak.org) and [Spring Boot](https://spring.i
 The idea is to have a variant of [Keycloak-X](https://www.keycloak.org/2019/10/keycloak-x) but based on 
 Spring Boot instead of Quarkus.
 
-Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environment. 
+Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environment.  
+
+# Compatibility  
+
+The following table shows the Keycloak versions used by the embedded Keycloak Server version.   
+
+Embedded Keycloak Server | Keycloak
+---|---
+1.0.0 | 9.0.3
 
 # Modules
 

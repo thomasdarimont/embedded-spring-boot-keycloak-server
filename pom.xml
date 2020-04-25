@@ -12,7 +12,7 @@
 
     <groupId>com.github.thomasdarimont.keycloak</groupId>
     <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-    <version>9.0.3.2.0.0.BUILD-SNAPSHOT</version>
+    <version>1.0.0.BUILD-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -26,10 +26,6 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <keycloak.version>9.0.3</keycloak.version>
-        <!--        <server.version>1.0.0</server.version>-->
-        <!--        <qualifier>BUILD-SNAPSHOT</qualifier>-->
-        <!--        <revision>${keycloak.version}.${server.version}.${qualifier}</revision>-->
-
         <resteasy.version>4.5.3.Final</resteasy.version>
         <infinispan.version>9.4.19.Final</infinispan.version>
 

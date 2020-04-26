@@ -74,17 +74,27 @@ kube_ping need additional jars in the classpath.
 
 > Note, that you need to use a centralized database if you want to really leverage a clustered embedded Keycloak.
 
-To see the clustering in action, you can run the following command on two nodes:
+To see the clustering in action, just build the project and run the following command on two nodes in the `embedded-keycloak-server-plain` directory:
 
 > Run on Node1:
 ```
-java  -Djgroups.tcpping.initial_hosts='node1[7600],node2[7600]' -jar target/*.jar
+java -Djgroups.configfile=jgroups.xml \
+     -Djgroups.bind_addr=$(hostname -I | cut -d' ' -f1) \
+     -Djgroups.tcpping.initial_hosts='node1[7600],node2[7600]' \
+     -Djava.net.preferIPv4Stack=true \
+     -jar target/*.jar
 ```
 
 > Run on Node2:
 ```
-java  -Djgroups.tcpping.initial_hosts='node1[7600],node2[7600]' -jar target/*.jar
+java -Djgroups.configfile=jgroups.xml \
+     -Djgroups.bind_addr=$(hostname -I | cut -d' ' -f1) \
+     -Djgroups.tcpping.initial_hosts='node1[7600],node2[7600]' \
+     -Djava.net.preferIPv4Stack=true \
+     -jar target/*.jar
 ```
+
+> Note, the expression `$(hostname -I | cut -d' ' -f1)` takes the first host IP address as the bind adress for JGroups.
 
 If the clustering works you should see messages like:
 ```

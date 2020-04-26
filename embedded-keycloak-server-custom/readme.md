@@ -4,9 +4,38 @@ Example for Embedded Keycloak Server Customizations
 The projects demonstrates how to use the `embedded-keycloak-server-spring-boot-starter` with
 custom extensions, themes and configuration.
 
+# Configuration
+
+## Using other databases
+
+Thanks to the Spring Boot integration, other databases can be easily configured.
+As an example we show how to use the PostgreSQL database. 
+
+Add the postgres dependency to your `pom.xml`.
+```
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+</dependency>
+```
+
+Adjust the datasource configuration in `application.yml`.
+```
+  datasource:
+    username: keycloak
+    password: keycloak
+    url: jdbc:postgresql://localhost:5432/embd_keycloak
+    hikari:
+      maximum-pool-size: 25
+      minimum-idle: 1
+    driver-class-name: org.postgresql.Driver
+```
+
 # Snippets
 
-## Using TCPPING
+## JGroups
+
+### Using TCPPING
 
 ```
 java -Djgroups.configfile=jgroups.xml \
@@ -16,7 +45,7 @@ java -Djgroups.configfile=jgroups.xml \
      -jar target/*.jar
 ```
 
-## Using DNS_PING
+### Using DNS_PING
 
 ```
 java -Djgroups.configfile=jgroups_dns.xml \
@@ -26,7 +55,7 @@ java -Djgroups.configfile=jgroups_dns.xml \
      -jar target/*.jar
 ```
 
-## Using custom jgroups configuration
+### Using custom jgroups configuration
 
 ```
 java -Djgroups.configfile=path/to/jgroups.xml \

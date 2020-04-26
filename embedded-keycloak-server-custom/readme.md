@@ -1,4 +1,4 @@
-Example for Customizing Embedded Keycloak Server
+Example for Embedded Keycloak Server Customizations
 ---
 
 The projects demonstrates how to use the `embedded-keycloak-server-spring-boot-starter` with

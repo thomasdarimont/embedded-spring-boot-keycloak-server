@@ -1,32 +1,27 @@
-<!--
-    TCP based stack, with flow control and message bundling. This is usually used when IP
-    multicasting cannot be used in a network, e.g. because it is disabled (routers discard multicast).
-    Note that TCP.bind_addr and TCPPING.initial_hosts should be set, possibly via system properties, e.g.
-    -Djgroups.bind_addr=192.168.5.2 and -Djgroups.tcpping.initial_hosts=192.168.5.2[7800]
--->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="urn:org:jgroups"
         xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups.xsd"
         version="${version}">
 
-    <TCP bind_port="7800"
+    <TCP bind_port="7600"
          sock_conn_timeout="2000"
          send_buf_size="640000"/>
 
     <!--
     <TCPPING async_discovery="true"
-             initial_hosts="${jgroups.tcpping.initial_hosts:localhost[7800],localhost[7800]}"
+             initial_hosts="${jgroups.tcpping.initial_hosts:localhost[7600],localhost[7600]}"
              port_range="1" num_discovery_runs="3"/>
     -->
     <dns.DNS_PING dns_query="${jgroups.dnsping.dns_query:localhost}"
-                  discovery_rsp_expiry_time="60000" />
+                  discovery_rsp_expiry_time="60000"
+    />
 
     <MERGE3/>
 
     <FD_SOCK start_port="57600"/>
 
-<!--    <FD_ALL2 timeout="9000" interval="3000" />-->
-    <FD_ALL/>
+    <FD_ALL2 timeout="9000" interval="3000" />
+<!--    <FD_ALL/>-->
     <VERIFY_SUSPECT/>
 
     <BARRIER />
@@ -46,8 +41,10 @@
               xmit_table_max_compaction_time="30000"
               conn_expiry_timeout="0"/>
 
-    <pbcast.STABLE stability_delay="500"
-                   desired_avg_gossip="5000"
+    <RSVP/>
+
+    <pbcast.STABLE stability_delay="1000"
+                   desired_avg_gossip="50000"
                    max_bytes="1M"/>
 
     <pbcast.GMS
@@ -59,7 +56,7 @@
     <MFC max_credits="2M"/>
 
     <FRAG3/>
-    <RSVP/>
+
 
     <pbcast.STATE_TRANSFER />
 

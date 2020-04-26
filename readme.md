@@ -78,12 +78,12 @@ To see the clustering in action, you can run the following command on two nodes:
 
 > Run on Node1:
 ```
-java  -Djgroups.tcpping.initial_hosts='node1[7800],node2[7800]' -jar target/*.jar
+java  -Djgroups.tcpping.initial_hosts='node1[7600],node2[7600]' -jar target/*.jar
 ```
 
 > Run on Node2:
 ```
-java  -Djgroups.tcpping.initial_hosts='node1[7800],node2[7800]' -jar target/*.jar
+java  -Djgroups.tcpping.initial_hosts='node1[7600],node2[7600]' -jar target/*.jar
 ```
 
 If the clustering works you should see messages like:

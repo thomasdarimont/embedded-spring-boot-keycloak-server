@@ -94,7 +94,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         Resource importLocation = imex.getImportLocation();
 
         if (!importLocation.exists()) {
-            LOG.info("Could not find keycloak import file %s", importLocation);
+            LOG.info("Could not find keycloak import file {}", importLocation);
             return;
         }
 
@@ -102,11 +102,11 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         try {
             file = importLocation.getFile();
         } catch (IOException e) {
-            LOG.error("Could not read keycloak import file %s", importLocation, e);
+            LOG.error("Could not read keycloak import file {}", importLocation, e);
             return;
         }
 
-        LOG.info("Starting Keycloak realm configuration import from location: %s", importLocation);
+        LOG.info("Starting Keycloak realm configuration import from location: {}", importLocation);
 
         KeycloakSession session = getSessionFactory().create();
 

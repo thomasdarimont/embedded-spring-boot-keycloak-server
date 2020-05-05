@@ -7,7 +7,7 @@
         <groupId>com.github.thomasdarimont.keycloak</groupId>
         <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
         <version>1.0.0.BUILD-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../</relativePath>
     </parent>
 
     <artifactId>embedded-keycloak-server-custom</artifactId>
@@ -34,25 +34,29 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-apis</artifactId>
+            <version>6.9.0</version>
+        </dependency>
+
+        <!-- DEPENDENCY OVERRIDES https://github.com/keycloak/keycloak/blob/master/pom.xml -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.5.5</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
 
         <resources>
             <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>banner.txt</include>
-                </includes>
-            </resource>
-            <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>*.xml</include>
-                    <include>*.yml</include>
-                </includes>
             </resource>
         </resources>
 

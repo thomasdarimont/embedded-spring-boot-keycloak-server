@@ -1,31 +1,32 @@
 package com.github.thomasdarimont.keycloak.embedded.support;
 
 import com.google.auto.service.AutoService;
-import org.jboss.resteasy.core.ResteasyContext;
+import org.jboss.resteasy.core.Dispatcher;
+import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.keycloak.common.util.ResteasyProvider;
 
 @AutoService(ResteasyProvider.class)
-public class Resteasy4Provider implements ResteasyProvider {
+public class Resteasy3Provider implements ResteasyProvider {
 
     @Override
     public <R> R getContextData(Class<R> type) {
-        return ResteasyContext.getContextData(type);
+        return ResteasyProviderFactory.getInstance().getContextData(type);
     }
 
     @Override
     public void pushDefaultContextObject(Class type, Object instance) {
-        ResteasyContext.getContextData(org.jboss.resteasy.spi.Dispatcher.class).getDefaultContextObjects()
+        ResteasyProviderFactory.getInstance().getContextData(Dispatcher.class).getDefaultContextObjects()
                 .put(type, instance);
     }
 
     @Override
     public void pushContext(Class type, Object instance) {
-        ResteasyContext.pushContext(type, instance);
+        ResteasyProviderFactory.getInstance().pushContext(type, instance);
     }
 
     @Override
     public void clearContextData() {
-        ResteasyContext.clearContextData();
+        ResteasyProviderFactory.getInstance().clearContextData();
     }
 
 }

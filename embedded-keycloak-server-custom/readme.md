@@ -63,3 +63,12 @@ java -Djgroups.configfile=path/to/jgroups.xml \
      -Djava.net.preferIPv4Stack=true \
      -jar target/*.jar
 ```
+
+# Current gotchas
+
+## Infinispan and JGroups compatibility
+Currently the jgroups configuration file is indirectly referenced via the jgroups-stack section in the infinispan configuration file.
+Unfortunately only the jgroups version `4.0.23` works with the currently used version of infinispan `9.4.19.Final`. 
+
+## Resteasy compatibility
+The current Keycloak codebase is only compatible with Resteasy 3.x.

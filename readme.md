@@ -103,3 +103,13 @@ If the clustering works you should see messages like:
 2020-04-19 11:29:17.005  INFO 17055 --- [e-thread--p2-t2] org.infinispan.CLUSTER                   : [Context=org.infinispan.CONFIG] ISPN100002: Starting rebalance with members [neumann-3283, gauss-45273], phase READ_OLD_WRITE_ALL, topology id 2
 ...
 ```
+
+
+# Current gotchas
+
+## Infinispan and JGroups compatibility
+Currently the jgroups configuration file is indirectly referenced via the jgroups-stack section in the infinispan configuration file.
+Unfortunately only the jgroups version `4.0.23` works with the currently used version of infinispan `9.4.19.Final`. 
+
+## Resteasy compatibility
+The current Keycloak codebase is only compatible with Resteasy 3.x.

@@ -11,10 +11,20 @@ import java.util.Map;
 /**
  * Delegates Config Key lookups to Spring Boot Properties.
  */
-@RequiredArgsConstructor
 public class SpringBootConfigProvider implements Config.ConfigProvider {
 
+    private static SpringBootConfigProvider INSTANCE;
+
     private final KeycloakProperties keycloakProperties;
+
+    public SpringBootConfigProvider(KeycloakProperties keycloakProperties) {
+        this.keycloakProperties = keycloakProperties;
+        INSTANCE = this;
+    }
+
+    public static SpringBootConfigProvider getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public String getProvider(String spi) {

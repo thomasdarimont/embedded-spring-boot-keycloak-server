@@ -1,6 +1,8 @@
 package com.github.thomasdarimont.keycloak.embedded;
 
 import com.github.thomasdarimont.keycloak.embedded.KeycloakCustomProperties.AdminUser;
+import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.Config;
 import org.keycloak.exportimport.ExportImportConfig;
 import org.keycloak.exportimport.ExportImportManager;
@@ -9,31 +11,22 @@ import org.keycloak.models.KeycloakTransactionManager;
 import org.keycloak.services.ServicesLogger;
 import org.keycloak.services.managers.ApplianceBootstrap;
 import org.keycloak.services.resources.KeycloakApplication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.jndi.JndiTemplate;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.File;
 import java.io.IOException;
 
+@Slf4j
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
-
-    private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKeycloakApplication.class);
 
     private final KeycloakCustomProperties customProperties;
 
     public EmbeddedKeycloakApplication(@Context ServletContext context) {
-
-        try {
-            this.customProperties = new JndiTemplate().lookup(EmbeddedKeycloakConfig.JNDI_CUSTOM_PROPERTIES, KeycloakCustomProperties.class);
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
+        this.customProperties = WebApplicationContextUtils.getRequiredWebApplicationContext(context).getBean(KeycloakCustomProperties.class);
     }
 
     @Override
@@ -48,17 +41,13 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
     }
 
     protected void loadConfig() {
-        try {
-            Config.init(new JndiTemplate().lookup(EmbeddedKeycloakConfig.JNDI_CONFIG_PROVIDER, Config.ConfigProvider.class));
-        } catch (NamingException e) {
-            LOG.error("Failed to lookup ConfigProvider from JDNI.", e);
-        }
+        Config.init(SpringBootConfigProvider.getInstance());
     }
 
     protected void tryCreateMasterRealmAdminUser() {
 
         if (!customProperties.getAdminUser().isCreateAdminUserEnabled()) {
-            LOG.warn("Skipping creation of keycloak master adminUser.");
+            log.warn("Skipping creation of keycloak master adminUser.");
             return;
         }
 
@@ -94,7 +83,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         Resource importLocation = imex.getImportLocation();
 
         if (!importLocation.exists()) {
-            LOG.info("Could not find keycloak import file {}", importLocation);
+            log.info("Could not find keycloak import file {}", importLocation);
             return;
         }
 
@@ -102,11 +91,11 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         try {
             file = importLocation.getFile();
         } catch (IOException e) {
-            LOG.error("Could not read keycloak import file {}", importLocation, e);
+            log.error("Could not read keycloak import file {}", importLocation, e);
             return;
         }
 
-        LOG.info("Starting Keycloak realm configuration import from location: {}", importLocation);
+        log.info("Starting Keycloak realm configuration import from location: {}", importLocation);
 
         KeycloakSession session = getSessionFactory().create();
 
@@ -119,6 +108,6 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
         session.close();
 
-        LOG.info("Keycloak realm configuration import finished.");
+        log.info("Keycloak realm configuration import finished.");
     }
 }

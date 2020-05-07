@@ -11,13 +11,11 @@ import javax.naming.NamingException;
 @AutoService(ManagedCacheManagerProvider.class)
 public class InfinispanCacheManagerProvider implements ManagedCacheManagerProvider {
 
-    public static final String JNDI_NAME = "spring/infinispan/cacheManager";
-
     @Override
     @SuppressWarnings("unchecked")
     public <C> C getCacheManager(Config.Scope config) {
         try {
-            return (C) new JndiTemplate().lookup(JNDI_NAME, DefaultCacheManager.class);
+            return (C) new JndiTemplate().lookup(DynamicJndiContextFactoryBuilder.JNDI_CACHE_MANAGAER, DefaultCacheManager.class);
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }

@@ -1,0 +1,16 @@
+pr: none
+
+variables:
+  - group: JavaBuild
+
+resources:
+  repositories:
+  - repository: templates
+    type: github
+    name: jjfood/azure-devops-pipelines
+    endpoint: jjfood
+
+jobs:
+- template: templates/java-new-build-library.yml@templates
+  parameters:
+    baseVersion: '2.0'

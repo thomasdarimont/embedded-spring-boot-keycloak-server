@@ -68,13 +68,13 @@ public class EmbeddedKeycloakConfig {
 
         servlet.addInitParameter("resteasy.allowGzip", "true");
         servlet.addInitParameter("keycloak.embedded", "true");
-        servlet.addInitParameter("resteasy.document.expand.entity.references", "false");
-        servlet.addInitParameter("resteasy.document.secure.processing.feature", "true");
-        servlet.addInitParameter("resteasy.document.secure.disableDTDs", "true");
-
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_EXPAND_ENTITY_REFERENCES, "false");
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SECURE_PROCESSING_FEATURE, "true");
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_DISABLE_DTDS, "true");
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, customProperties.getServer().getKeycloakPath());
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "false");
         servlet.addUrlMappings(customProperties.getServer().getKeycloakPath() + "/*");
+
         servlet.setLoadOnStartup(2);
         servlet.setAsyncSupported(true);
 

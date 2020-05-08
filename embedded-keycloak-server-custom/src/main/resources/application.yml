@@ -5,6 +5,10 @@ spring:
     hikari:
       maximum-pool-size: 25
       minimum-idle: 1
+  devtools:
+    restart:
+      enabled: false
+
 
 logging:
   level:

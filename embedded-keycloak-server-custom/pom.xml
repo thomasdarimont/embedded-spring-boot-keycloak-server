@@ -37,7 +37,6 @@
     </dependencies>
 
     <build>
-
         <resources>
             <resource>
                 <filtering>true</filtering>
@@ -52,6 +51,8 @@
                 <includes>
                     <include>*.xml</include>
                     <include>*.yml</include>
+                    <include>theme/**</include>
+                    <include>META-INF/**</include>
                 </includes>
             </resource>
         </resources>

@@ -1,11 +1,18 @@
 package custom.keycloak.auth.demoauth;
 
+import custom.keycloak.auth.GreaterBean;
 import lombok.extern.jbosslog.JBossLog;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletContext;
 
 @JBossLog
 public class DemoAuthenticator implements Authenticator {
@@ -21,6 +28,8 @@ public class DemoAuthenticator implements Authenticator {
 
         UserModel user = context.getUser();
 
+        greet(user.getUsername());
+
         if (user != null) {
             log.infof("Pass through: %s%n", user.getUsername());
         } else {
@@ -28,6 +37,14 @@ public class DemoAuthenticator implements Authenticator {
         }
 
         context.success();
+    }
+
+    private void greet(String username) {
+
+        ServletContext servletContext = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getServletContext();
+        WebApplicationContext appCtxt = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+        GreaterBean greeter = appCtxt.getBean(GreaterBean.class);
+        greeter.greet(username);
     }
 
     @Override

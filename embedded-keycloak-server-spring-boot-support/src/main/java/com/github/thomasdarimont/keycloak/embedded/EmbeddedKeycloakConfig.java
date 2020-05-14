@@ -74,6 +74,7 @@ public class EmbeddedKeycloakConfig {
 
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX, customProperties.getServer().getKeycloakPath());
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "false");
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_DISABLE_HTML_SANITIZER, "true");
         servlet.addUrlMappings(customProperties.getServer().getKeycloakPath() + "/*");
         servlet.setLoadOnStartup(2);
         servlet.setAsyncSupported(true);

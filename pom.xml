@@ -12,7 +12,7 @@
 
     <groupId>com.github.thomasdarimont.keycloak</groupId>
     <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <packaging>pom</packaging>
 

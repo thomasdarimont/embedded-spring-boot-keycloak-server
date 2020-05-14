@@ -3,6 +3,7 @@ package com.github.thomasdarimont.keycloak.embedded;
 import com.github.thomasdarimont.keycloak.embedded.support.DynamicJndiContextFactoryBuilder;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatform;
+import lombok.extern.slf4j.Slf4j;
 import org.infinispan.configuration.parsing.ConfigurationBuilderHolder;
 import org.infinispan.configuration.parsing.ParserRegistry;
 import org.infinispan.manager.DefaultCacheManager;
@@ -17,8 +18,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
+@Slf4j
 @Configuration
 public class EmbeddedKeycloakConfig {
 
@@ -63,6 +67,8 @@ public class EmbeddedKeycloakConfig {
     @ConditionalOnMissingBean(name = "keycloakJaxRsApplication")
     protected ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(KeycloakCustomProperties customProperties) {
 
+        initKeycloakEnvironmentFromProfiles();
+
         ServletRegistrationBean<HttpServlet30Dispatcher> servlet = new ServletRegistrationBean<>(new HttpServlet30Dispatcher());
         servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
 
@@ -80,6 +86,26 @@ public class EmbeddedKeycloakConfig {
         servlet.setAsyncSupported(true);
 
         return servlet;
+    }
+
+    private void initKeycloakEnvironmentFromProfiles() {
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("profile.properties")) {
+            Properties profile = new Properties();
+            profile.load(is);
+
+            String profilePrefix = "keycloak.profile.";
+            for (Object key : profile.keySet()) {
+                String value = (String) profile.get(key);
+                String featureName = key.toString().toLowerCase();
+                String currentValue = System.getProperty(profilePrefix + featureName);
+                if (currentValue == null) {
+                    System.setProperty(profilePrefix + featureName, value);
+                }
+            }
+        } catch (IOException ioe) {
+            log.warn("Could not read profile.properties");
+        }
     }
 
     @Bean

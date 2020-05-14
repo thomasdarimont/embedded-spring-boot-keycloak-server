@@ -53,6 +53,7 @@
                     <include>*.yml</include>
                     <include>*.properties</include>
                     <include>theme/**</include>
+                    <include>scripts/**</include>
                     <include>META-INF/**</include>
                 </includes>
             </resource>

@@ -90,10 +90,17 @@ public class EmbeddedKeycloakConfig {
 
     private void initKeycloakEnvironmentFromProfiles() {
 
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("profile.properties")) {
-            Properties profile = new Properties();
-            profile.load(is);
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("profile.properties")) {
 
+            if (in == null) {
+                log.info("Could not find profile.properties on classpath.");
+                return;
+            }
+
+            Properties profile = new Properties();
+            profile.load(in);
+
+            log.info("Found profile.properties on classpath.");
             String profilePrefix = "keycloak.profile.";
             for (Object key : profile.keySet()) {
                 String value = (String) profile.get(key);
@@ -104,7 +111,7 @@ public class EmbeddedKeycloakConfig {
                 }
             }
         } catch (IOException ioe) {
-            log.warn("Could not read profile.properties");
+            log.warn("Could not read profile.properties.", ioe);
         }
     }
 

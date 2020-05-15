@@ -41,6 +41,8 @@ import java.util.Optional;
 @AutoService(AuthenticatorFactory.class)
 public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFactory, EnvironmentDependentProviderFactory {
 
+    public static final String KEYCLOAK_SCRIPTS_JSON_LOCATION = "META-INF/keycloak-scripts.json";
+
     @Override
     public String getId() {
         return "script-component-registrar";
@@ -68,9 +70,33 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
         deployKeycloakScriptComponents((ProviderManagerDeployer) factory, keycloakScripts);
     }
 
+    private KeycloakScripts discoverScriptComponents() {
+
+        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(KEYCLOAK_SCRIPTS_JSON_LOCATION)) {
+
+            if (in == null) {
+                log.info("Could detect any script-based components.");
+                return null;
+            }
+
+            KeycloakScripts keycloakScripts = new KeycloakScripts(JsonSerialization.readValue(in, ScriptProviderDescriptor.class));
+            List<ScriptProviderMetadata> authenticators = keycloakScripts.getAuthenticators();
+            List<ScriptProviderMetadata> oidcMappers = keycloakScripts.getOidcMappers();
+            List<ScriptProviderMetadata> policies = keycloakScripts.getPolicies();
+            log.info("Detected script-based components. authenticators={} mappers={} policies={}", authenticators.size(), oidcMappers.size(), policies.size());
+
+            return keycloakScripts;
+        } catch (IOException e) {
+            log.info("Failed to load detect any script-based components on classpath from {}.", KEYCLOAK_SCRIPTS_JSON_LOCATION, e);
+        }
+
+        return null;
+    }
+
+
     private void deployKeycloakScriptComponents(ProviderManagerDeployer factory, KeycloakScripts keycloakScripts) {
 
-        KeycloakDeploymentInfo kdi = KeycloakDeploymentInfo.create().name("script-authenticators");
+        KeycloakDeploymentInfo kdi = KeycloakDeploymentInfo.create().name("script-components");
 
         List<ScriptProviderMetadata> authenticators = keycloakScripts.getAuthenticators();
         authenticators.stream()
@@ -94,52 +120,6 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
         ProviderManagerRegistry.SINGLETON.deploy(pm);
     }
 
-    @Override
-    public void close() {
-        // NOOP
-    }
-
-    private KeycloakScripts discoverScriptComponents() {
-
-        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/keycloak-scripts.json")) {
-
-            KeycloakScripts keycloakScripts = new KeycloakScripts(JsonSerialization.readValue(in, ScriptProviderDescriptor.class));
-            List<ScriptProviderMetadata> authenticators = keycloakScripts.getAuthenticators();
-            List<ScriptProviderMetadata> oidcMappers = keycloakScripts.getOidcMappers();
-            List<ScriptProviderMetadata> policies = keycloakScripts.getPolicies();
-            log.info("Detected script-based components. authenticators={} mappers={} policies={}", authenticators.size(), oidcMappers.size(), policies.size());
-
-            return keycloakScripts;
-        } catch (IOException e) {
-            log.info("Could detect any script-based components.");
-        }
-
-        return null;
-    }
-
-    @RequiredArgsConstructor
-    static class KeycloakScripts {
-
-        private final ScriptProviderDescriptor descriptor;
-
-        public List<ScriptProviderMetadata> getAuthenticators() {
-            return Optional.ofNullable(descriptor.getProviders().get(ScriptProviderDescriptor.AUTHENTICATORS)).orElse(Collections.emptyList());
-        }
-
-        public List<ScriptProviderMetadata> getOidcMappers() {
-            return Optional.ofNullable(descriptor.getProviders().get(ScriptProviderDescriptor.MAPPERS)).orElse(Collections.emptyList());
-        }
-
-        public List<ScriptProviderMetadata> getPolicies() {
-            return Optional.ofNullable(descriptor.getProviders().get(ScriptProviderDescriptor.POLICIES)).orElse(Collections.emptyList());
-        }
-    }
-
-    @Override
-    public boolean isSupported() {
-        return Profile.isFeatureEnabled(Profile.Feature.SCRIPTS);
-    }
-
     private ScriptProviderMetadata initScriptComponent(ScriptProviderMetadata scriptMetadata) {
 
         scriptMetadata.setId("script" + "-" + scriptMetadata.getFileName());
@@ -158,6 +138,16 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
         }
 
         return scriptMetadata;
+    }
+
+    @Override
+    public void close() {
+        // NOOP
+    }
+
+    @Override
+    public boolean isSupported() {
+        return Profile.isFeatureEnabled(Profile.Feature.SCRIPTS);
     }
 
     @Override
@@ -193,5 +183,23 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
     @Override
     public List<ProviderConfigProperty> getConfigProperties() {
         return Collections.emptyList();
+    }
+
+    @RequiredArgsConstructor
+    static class KeycloakScripts {
+
+        private final ScriptProviderDescriptor descriptor;
+
+        public List<ScriptProviderMetadata> getAuthenticators() {
+            return Optional.ofNullable(descriptor.getProviders().get(ScriptProviderDescriptor.AUTHENTICATORS)).orElse(Collections.emptyList());
+        }
+
+        public List<ScriptProviderMetadata> getOidcMappers() {
+            return Optional.ofNullable(descriptor.getProviders().get(ScriptProviderDescriptor.MAPPERS)).orElse(Collections.emptyList());
+        }
+
+        public List<ScriptProviderMetadata> getPolicies() {
+            return Optional.ofNullable(descriptor.getProviders().get(ScriptProviderDescriptor.POLICIES)).orElse(Collections.emptyList());
+        }
     }
 }

@@ -5,11 +5,15 @@
         xmlns="urn:infinispan:config:9.4">
 
     <jgroups>
-        <stack-file name="jgroups" path="${jgroups.configfile:jgroups.xml}"/>
+        <!--        <stack-file name="jgroups" path="${jgroups.configfile:jgroups.xml}"/>-->
+        <!-- the default-configs/default-jgroups-udp.xml is located in infinispan-core-*.jar-->
+        <stack-file name="jgroups" path="${jgroups.configfile:default-configs/default-jgroups-udp.xml}"/>
     </jgroups>
 
     <cache-container name="keycloak">
-        <transport stack="jgroups"  lock-timeout="60000"/>
+
+        <transport stack="jgroups" lock-timeout="60000"/>
+
         <local-cache name="realms">
             <memory>
                 <object size="10000"/>

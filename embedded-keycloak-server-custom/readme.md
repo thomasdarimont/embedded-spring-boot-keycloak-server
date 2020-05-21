@@ -31,6 +31,18 @@ Adjust the datasource configuration in `application.yml`.
     driver-class-name: org.postgresql.Driver
 ```
 
+## Docker Image
+
+To build a [docker image with Spring-Boot 2.3.0 tooling](https://spring.io/blog/2020/05/15/spring-boot-2-3-0-available-now), just run the following command:
+```
+mvn spring-boot:build-image
+```  
+
+This creates a docker image that you can run via the command:
+```
+docker run -it --rm -p 8080:8080 --name custom-keycloak docker.io/library/embedded-keycloak-server-custom:0.0.1-SNAPSHOT
+```
+
 # Snippets
 
 ## JGroups

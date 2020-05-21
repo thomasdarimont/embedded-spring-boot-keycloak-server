@@ -28,7 +28,7 @@
         <keycloak.version>10.0.1</keycloak.version>
         <resteasy.version>3.11.2.Final</resteasy.version>
         <infinispan.version>9.4.19.Final</infinispan.version>
-        <jgroups.version>4.0.23.Final</jgroups.version>
+        <jgroups.version>4.2.4.Final</jgroups.version>
 
         <auto-service.version>1.0-rc6</auto-service.version>
     </properties>

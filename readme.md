@@ -109,7 +109,7 @@ If the clustering works you should see messages like:
 # Current gotchas
 
 ## Infinispan and JGroups compatibility
-Currently, the latest infinispan which Keycloak supports is `9.4.19.Final`. 
+Currently, the latest infinispan version which Keycloak supports is `9.4.19.Final`. 
 
 ## Resteasy compatibility
 The current Keycloak codebase is only compatible with Resteasy 3.x.

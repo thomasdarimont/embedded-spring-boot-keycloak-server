@@ -11,12 +11,36 @@
     <artifactId>embedded-keycloak-server-plain</artifactId>
     <description>Embedded Keycloak Server Plain</description>
 
+    <properties>
+        <java.version>11</java.version>
+        <start-class>com.github.thomasdarimont.keycloak.embedded.runner.Main</start-class>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.keycloak</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-indexer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>spring-graal-native</artifactId>
+            <version>0.6.1.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.graalvm.nativeimage</groupId>
+            <artifactId>graal-hotspot-library</artifactId>
+            <version>20.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

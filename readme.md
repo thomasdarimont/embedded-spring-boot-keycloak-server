@@ -15,7 +15,7 @@ The following table shows the Keycloak versions used by the embedded Keycloak Se
 Embedded Keycloak Server | Keycloak
 ---|---
 1.x.y | 9.0.3
-2.x.y | 10.0.1
+2.x.y | 10.0.2
 
 # Modules
 

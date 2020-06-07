@@ -1,5 +1,5 @@
 Embedded Keycloak Server running in a Spring Boot App 
-----------------------------------------------------------
+=====================================================
 
 This project provides an embedded Authentication and Authorization Server 
 based on [Keycloak](https://www.keycloak.org) and [Spring Boot](https://spring.io/projects/spring-boot).  
@@ -8,7 +8,7 @@ Spring Boot instead of Quarkus.
 
 Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environment.  
 
-# Compatibility  
+## Compatibility  
 
 The following table shows the Keycloak versions used by the embedded Keycloak Server version.   
 
@@ -17,23 +17,48 @@ Embedded Keycloak Server | Keycloak
 1.x.y | 9.0.3
 2.x.y | 10.0.2
 
-# Modules
+## Modules
 
-## embedded-keycloak-server-spring-boot-support
+### embedded-keycloak-server-spring-boot-support
 This module contains the necessary bits to embed a Keycloak server
 in a Spring Boot app.
 
-## embedded-keycloak-server-spring-boot-starter
+### embedded-keycloak-server-spring-boot-starter
 This module contains a Spring Boot starter for an Embedded Keycloak Server. 
 
-## embedded-keycloak-server-plain
-This module contains the raw embed a Keycloak server
+### embedded-keycloak-server-plain
+This is an example module showing the raw embed a Keycloak server
 in a Spring Boot app without additional customizations.
 
-## embedded-keycloak-server-custom
-This module contains the embed a Keycloak server in a Spring Boot app with additional customizations.
+### embedded-keycloak-server-custom
+This is an example module showing how to embed a Keycloak server in a Spring Boot app with additional customizations.
 
-# Build
+## Installation
+
+To add Keycloak to a Spring Boot project, add a dependency to the Spring Boot starter:
+
+In Maven:
+``` xml
+<dependencies>
+  <dependency>
+    <groupId>com.github.thomasdarimont.keycloak</groupId>
+    <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
+    <version>2.1.0</version>
+  </dependency>
+  ...
+</dependencies>
+```
+
+In Gradle:
+``` groovy
+dependencies {
+  implementation("com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-starter:2.1.0")
+}
+```
+
+Make sure you chose a version that matches the Keycloak version you want to use from the compatibility table above.
+
+## Build
 
 To build the embedded Spring Boot Keycloak Server, run the following command:
 Note: we use the `install` goal to install the artifacts into the local maven repository  
@@ -42,26 +67,26 @@ in order to be able to consume the artifacts in our customization project.
 mvn clean install
 ```
 
-# Run
-To run the plain embedded keycloak server app, you can execute the following command:
+## Run
+To run the plain embedded keycloak server example app, you can execute the following command:
 ```
 java -jar embedded-keycloak-server-plain/target/*.jar
 ```
 
 The embedded Keycloak server is now reachable via http://localhost:8080/auth
 
-# Configuration
+## Configuration
 
 The Keycloak server part can be configured via Spring Boot configuration mechanism.  
 See `embedded-keycloak-server-plain/application.yml` for a list of configurable settings.
 
-# Customizing
+## Customizing
 
 The `embedded-keycloak-server-custom` example project demonstrates how one can use the  
 `embedded-keycloak-server-spring-boot-starter` library to create an embedded Keycloak server with additional   
 customizations like Keycloak extensions and a custom theme.  
 
-# Clustering
+## Clustering
 The embedded Keycloak server uses JGroups for Peer-to-Peer cluster communication and Infinispan for  
 managing distributed caches like SSO-Sessions etc.  
 
@@ -106,10 +131,10 @@ If the clustering works you should see messages like:
 ```
 
 
-# Current gotchas
+## Current gotchas
 
-## Infinispan and JGroups compatibility
+### Infinispan and JGroups compatibility
 Currently, the latest infinispan version which Keycloak supports is `9.4.19.Final`. 
 
-## Resteasy compatibility
+### Resteasy compatibility
 The current Keycloak codebase is only compatible with Resteasy 3.x.

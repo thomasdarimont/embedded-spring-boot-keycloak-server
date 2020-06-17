@@ -35,24 +35,49 @@ This is an example module showing how to embed a Keycloak server in a Spring Boo
 
 ## Installation
 
-To add Keycloak to a Spring Boot project, add a dependency to the Spring Boot starter:
+To add Keycloak to a Spring Boot project, add a dependency to the Spring Boot starter and make sure to use this project's BOM/parent so that you're getting all the right dependency versions:
 
 In Maven:
 ``` xml
-<dependencies>
-  <dependency>
-    <groupId>com.github.thomasdarimont.keycloak</groupId>
-    <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-    <version>2.1.0</version>
-  </dependency>
+<project ...>
+  <parent>
+      <groupId>com.github.thomasdarimont.keycloak</groupId>
+      <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
+      <version>2.1.0</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.github.thomasdarimont.keycloak</groupId>
+      <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+  </dependencies>
+
   ...
-</dependencies>
+</project>
 ```
 
 In Gradle:
 ``` groovy
+plugins {
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencyManagement {
+  imports {
+    mavenBom 'com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-parent:2.1.0'
+  }
+}
+
 dependencies {
-  implementation("com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-starter:2.1.0")
+  implementation "com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-starter:2.1.0"
 }
 ```
 

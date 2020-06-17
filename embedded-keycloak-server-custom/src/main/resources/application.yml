@@ -8,7 +8,8 @@ spring:
   devtools:
     restart:
       enabled: false
-
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
 
 logging:
   level:
@@ -25,6 +26,8 @@ server:
   port: 8080
   servlet:
     context-path: "/"
+  shutdown: graceful
+
 
 resteasy:
   deployment:

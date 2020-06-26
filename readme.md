@@ -43,14 +43,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.keycloak</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>2.1.0</version>
+      <version>2.2.0</version>
   </parent>
 
   <dependencies>
     <dependency>
       <groupId>com.github.thomasdarimont.keycloak</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-      <version>2.1.0</version>
+      <version>2.2.0</version>
     </dependency>
   </dependencies>
 
@@ -61,7 +61,7 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.3.0.RELEASE'
+	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }
@@ -72,12 +72,12 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-parent:2.1.0'
+    mavenBom 'com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-parent:2.2.0'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-starter:2.1.0"
+  implementation "com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-starter:2.2.0"
 }
 ```
 

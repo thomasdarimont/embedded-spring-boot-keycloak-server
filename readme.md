@@ -37,22 +37,33 @@ This is an example module showing how to embed a Keycloak server in a Spring Boo
 
 To add Keycloak to a Spring Boot project, add a dependency to the Spring Boot starter and make sure to use this project's BOM/parent so that you're getting all the right dependency versions:
 
+Note that the artifacts are currently distributed via [jitpack](https://jitpack.io/).
+
 In Maven:
 ``` xml
 <project ...>
   <parent>
-      <groupId>com.github.thomasdarimont.keycloak</groupId>
+      <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
       <version>2.2.0</version>
   </parent>
 
   <dependencies>
-    <dependency>
-      <groupId>com.github.thomasdarimont.keycloak</groupId>
-      <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-      <version>2.2.0</version>
-    </dependency>
+        <dependency>
+            <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
+            <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
+            <version>2.2.0</version>
+        </dependency>
   </dependencies>
+
+...
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
   ...
 </project>
@@ -68,16 +79,17 @@ plugins {
 
 repositories {
   mavenCentral()
+  maven { url "https://jitpack.io" }
 }
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-parent:2.2.0'
+    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:2.2.0'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.keycloak:embedded-keycloak-server-spring-boot-starter:2.2.0"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:2.2.0"
 }
 ```
 

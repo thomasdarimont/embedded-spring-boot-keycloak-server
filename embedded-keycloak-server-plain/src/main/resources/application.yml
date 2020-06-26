@@ -7,9 +7,11 @@ spring:
       minimum-idle: 1
 
 server:
+  forward-headers-strategy: native
   port: 8080
   servlet:
     context-path: "/"
+
 
 logging:
   level:

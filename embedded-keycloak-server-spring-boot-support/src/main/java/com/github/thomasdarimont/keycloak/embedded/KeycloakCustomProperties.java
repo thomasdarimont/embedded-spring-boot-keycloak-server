@@ -3,6 +3,7 @@ package com.github.thomasdarimont.keycloak.embedded;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 @Getter
@@ -41,7 +42,7 @@ public class KeycloakCustomProperties {
     @Setter
     public static class Infinispan {
 
-        Resource configLocation;
+        Resource configLocation = new ClassPathResource("infinispan.xml");
     }
 
     @Getter

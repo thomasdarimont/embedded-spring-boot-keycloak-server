@@ -16,6 +16,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -55,7 +56,9 @@ public class EmbeddedKeycloakConfig {
     protected DefaultCacheManager keycloakInfinispanCacheManager(KeycloakCustomProperties customProperties) throws Exception {
 
         KeycloakCustomProperties.Infinispan infinispan = customProperties.getInfinispan();
-        try (InputStream inputStream = infinispan.getConfigLocation().getInputStream()) {
+        Resource configLocation = infinispan.getConfigLocation();
+        log.info("Using infinispan configuration from {}", configLocation.getURI());
+        try (InputStream inputStream = configLocation.getInputStream()) {
             ConfigurationBuilderHolder configBuilder = new ParserRegistry().parse(inputStream);
             DefaultCacheManager defaultCacheManager = new DefaultCacheManager(configBuilder, false);
             defaultCacheManager.start();

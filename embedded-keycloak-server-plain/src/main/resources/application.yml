@@ -30,9 +30,6 @@ keycloak:
     server:
       keycloak-path: "/auth"
 
-    infinispan:
-      configLocation: "classpath:infinispan.xml"
-
     adminUser:
       username: admin
       password: admin

@@ -269,6 +269,7 @@
 
                 <configuration>
                     <skipPoms>false</skipPoms>
+                    <useNativeGit>true</useNativeGit>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <!-- enables other plugins to use git properties -->
                     <injectAllReactorProjects>true</injectAllReactorProjects>

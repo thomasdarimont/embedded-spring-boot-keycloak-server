@@ -50,6 +50,8 @@ public class DynamicJndiContextFactoryBuilder implements InitialContextFactoryBu
                         return cacheManager;
                     }
 
+                    log.warn("JNDI name not found: {}", name);
+
                     return null;
                 }
 

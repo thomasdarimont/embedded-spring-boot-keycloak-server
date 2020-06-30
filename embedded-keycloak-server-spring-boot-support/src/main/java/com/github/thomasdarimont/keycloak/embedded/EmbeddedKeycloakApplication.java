@@ -19,6 +19,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @Slf4j
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
@@ -53,7 +54,8 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
 
         AdminUser adminUser = customProperties.getAdminUser();
 
-        if (StringUtils.isEmpty(adminUser.getUsername()) || StringUtils.isEmpty(adminUser.getPassword())) {
+        String username = adminUser.getUsername();
+        if (StringUtils.isEmpty(username)) {
             return;
         }
 
@@ -62,16 +64,25 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         try {
             transaction.begin();
 
-            new ApplianceBootstrap(session).createMasterRealmUser(adminUser.getUsername(), adminUser.getPassword());
-            ServicesLogger.LOGGER.addUserSuccess(adminUser.getUsername(), Config.getAdminRealm());
+            boolean randomPassword = false;
+            String password = adminUser.getPassword();
+            if (StringUtils.isEmpty(adminUser.getPassword())) {
+                password = UUID.randomUUID().toString();
+                randomPassword = true;
+            }
+            new ApplianceBootstrap(session).createMasterRealmUser(username, password);
+            if (randomPassword) {
+                log.info("Generated admin password: {}", password);
+            }
+            ServicesLogger.LOGGER.addUserSuccess(username, Config.getAdminRealm());
 
             transaction.commit();
         } catch (IllegalStateException e) {
             transaction.rollback();
-            ServicesLogger.LOGGER.addUserFailedUserExists(adminUser.getUsername(), Config.getAdminRealm());
+            ServicesLogger.LOGGER.addUserFailedUserExists(username, Config.getAdminRealm());
         } catch (Throwable t) {
             transaction.rollback();
-            ServicesLogger.LOGGER.addUserFailed(t, adminUser.getUsername(), Config.getAdminRealm());
+            ServicesLogger.LOGGER.addUserFailed(t, username, Config.getAdminRealm());
         } finally {
             session.close();
         }

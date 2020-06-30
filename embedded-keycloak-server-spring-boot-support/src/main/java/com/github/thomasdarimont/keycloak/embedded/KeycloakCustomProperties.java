@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 @Getter
@@ -33,9 +34,9 @@ public class KeycloakCustomProperties {
     @Setter
     public static class Migration {
 
-        Resource importLocation;
+        Resource importLocation = new FileSystemResource("keycloak-realm-config.json");
 
-        String importProvider;
+        String importProvider = "singleFile";
     }
 
     @Getter
@@ -49,9 +50,9 @@ public class KeycloakCustomProperties {
     @Setter
     public static class AdminUser {
 
-        boolean createAdminUserEnabled;
+        boolean createAdminUserEnabled = true;
 
-        String username;
+        String username = "admin";
 
         String password;
     }

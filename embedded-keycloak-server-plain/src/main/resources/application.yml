@@ -23,10 +23,6 @@ logging:
     org.keycloak.services.managers.UserSessionManager: DEBUG
     org.keycloak.timer.basic: DEBUG
 
-resteasy:
-  deployment:
-    async_job_service_enabled: true
-
 #keycloak:
 #  custom:
 #    server:

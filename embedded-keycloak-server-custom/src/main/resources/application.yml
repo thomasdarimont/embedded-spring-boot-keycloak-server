@@ -29,11 +29,6 @@ server:
     context-path: "/"
   shutdown: graceful
 
-
-resteasy:
-  deployment:
-    async_job_service_enabled: true
-
 keycloak:
   custom:
     server:

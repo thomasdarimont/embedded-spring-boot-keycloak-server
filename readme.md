@@ -45,14 +45,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>2.2.0</version>
+      <version>2.3.0</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>2.2.0</version>
+            <version>2.3.0</version>
         </dependency>
   </dependencies>
 
@@ -84,12 +84,12 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:2.2.0'
+    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:2.3.0'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:2.2.0"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:2.3.0"
 }
 ```
 

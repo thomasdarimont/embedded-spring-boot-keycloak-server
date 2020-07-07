@@ -112,6 +112,11 @@ java -jar embedded-keycloak-server-plain/target/*.jar
 
 The embedded Keycloak server is now reachable via http://localhost:8080/auth
 
+Note: If you didn't configure an admin password explicitly, we will generate the password at startup and print it to the console.
+```
+2020-07-07 16:02:39.531  INFO 13974 --- [           main] c.g.t.k.e.EmbeddedKeycloakApplication    : Generated admin password: 15909ee9-871d-4caf-ad04-5da5f3e0838f		
+```
+
 ## Configuration
 
 The Keycloak server part can be configured via Spring Boot configuration mechanism.  

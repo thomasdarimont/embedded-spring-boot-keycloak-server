@@ -1,24 +1,18 @@
-package com.github.thomasdarimont.keycloak.embedded.scripting;
+package com.github.thomasdarimont.keycloak.embedded.components;
 
 import com.google.auto.service.AutoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.Config;
-import org.keycloak.authentication.Authenticator;
 import org.keycloak.authentication.AuthenticatorFactory;
 import org.keycloak.authentication.AuthenticatorSpi;
 import org.keycloak.authentication.authenticators.browser.DeployedScriptAuthenticatorFactory;
 import org.keycloak.authorization.policy.provider.PolicySpi;
 import org.keycloak.authorization.policy.provider.js.DeployedScriptPolicyFactory;
 import org.keycloak.common.Profile;
-import org.keycloak.models.AuthenticationExecutionModel;
-import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.protocol.ProtocolMapperSpi;
 import org.keycloak.protocol.oidc.mappers.DeployedScriptOIDCProtocolMapper;
-import org.keycloak.provider.EnvironmentDependentProviderFactory;
 import org.keycloak.provider.KeycloakDeploymentInfo;
-import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.provider.ProviderManager;
 import org.keycloak.provider.ProviderManagerDeployer;
 import org.keycloak.provider.ProviderManagerRegistry;
@@ -35,11 +29,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * {@link EmbeddedScriptBasedComponentRegistrar} discovers script based components like Authenticators, OIDC Mappers and Authorization Policies.
+ * {@link ScriptComponentsRegistrar} discovers script based components like Authenticators, OIDC Mappers and Authorization Policies.
  */
 @Slf4j
 @AutoService(AuthenticatorFactory.class)
-public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFactory, EnvironmentDependentProviderFactory {
+public class ScriptComponentsRegistrar extends AbstractComponentsRegistrar {
 
     public static final String KEYCLOAK_SCRIPTS_JSON_LOCATION = "META-INF/keycloak-scripts.json";
 
@@ -49,25 +43,12 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
     }
 
     @Override
-    public Authenticator create(KeycloakSession session) {
-        // NOT USED
-        return null;
-    }
-
-    @Override
-    public void init(Config.Scope config) {
-        // NOOP
-    }
-
-    @Override
     public void postInit(KeycloakSessionFactory factory) {
 
         KeycloakScripts keycloakScripts = discoverScriptComponents();
-        if (keycloakScripts == null) {
-            return;
+        if (keycloakScripts != null) {
+            deployKeycloakScriptComponents((ProviderManagerDeployer) factory, keycloakScripts);
         }
-
-        deployKeycloakScriptComponents((ProviderManagerDeployer) factory, keycloakScripts);
     }
 
     private KeycloakScripts discoverScriptComponents() {
@@ -75,7 +56,7 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
         try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(KEYCLOAK_SCRIPTS_JSON_LOCATION)) {
 
             if (in == null) {
-                log.info("Could detect any script-based components.");
+                log.info("Could not detect any script-based components.");
                 return null;
             }
 
@@ -92,7 +73,6 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
 
         return null;
     }
-
 
     private void deployKeycloakScriptComponents(ProviderManagerDeployer factory, KeycloakScripts keycloakScripts) {
 
@@ -141,48 +121,8 @@ public class EmbeddedScriptBasedComponentRegistrar implements AuthenticatorFacto
     }
 
     @Override
-    public void close() {
-        // NOOP
-    }
-
-    @Override
     public boolean isSupported() {
         return Profile.isFeatureEnabled(Profile.Feature.SCRIPTS);
-    }
-
-    @Override
-    public String getDisplayType() {
-        return null;
-    }
-
-    @Override
-    public String getReferenceCategory() {
-        return null;
-    }
-
-    @Override
-    public boolean isConfigurable() {
-        return false;
-    }
-
-    @Override
-    public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {
-        return new AuthenticationExecutionModel.Requirement[0];
-    }
-
-    @Override
-    public boolean isUserSetupAllowed() {
-        return false;
-    }
-
-    @Override
-    public String getHelpText() {
-        return null;
-    }
-
-    @Override
-    public List<ProviderConfigProperty> getConfigProperties() {
-        return Collections.emptyList();
     }
 
     @RequiredArgsConstructor

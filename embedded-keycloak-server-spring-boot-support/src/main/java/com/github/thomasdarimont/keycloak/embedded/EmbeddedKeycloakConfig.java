@@ -3,13 +3,13 @@ package com.github.thomasdarimont.keycloak.embedded;
 import com.github.thomasdarimont.keycloak.embedded.support.DynamicJndiContextFactoryBuilder;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatform;
+import com.github.thomasdarimont.keycloak.embedded.support.UndertowRequestFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.infinispan.configuration.parsing.ConfigurationBuilderHolder;
 import org.infinispan.configuration.parsing.ParserRegistry;
 import org.infinispan.manager.DefaultCacheManager;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
-import org.keycloak.services.filters.KeycloakSessionServletFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -120,11 +120,11 @@ public class EmbeddedKeycloakConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "keycloakSessionManagement")
-    protected FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement(KeycloakCustomProperties customProperties) {
+    protected FilterRegistrationBean<UndertowRequestFilter> keycloakSessionManagement(KeycloakCustomProperties customProperties) {
 
-        FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
+        FilterRegistrationBean<UndertowRequestFilter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");
-        filter.setFilter(new KeycloakSessionServletFilter());
+        filter.setFilter(new UndertowRequestFilter());
         filter.addUrlPatterns(customProperties.getServer().getKeycloakPath() + "/*");
 
         return filter;

@@ -72,7 +72,7 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.3.1.RELEASE'
+	id 'org.springframework.boot' version '2.3.3.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }

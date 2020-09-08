@@ -15,7 +15,8 @@ The following table shows the Keycloak versions used by the embedded Keycloak Se
 Embedded Keycloak Server | Keycloak
 ---|---
 1.x.y | 9.0.3
-2.x.y | 10.0.2
+2.3.y | 10.0.2
+2.4.y | 11.0.2
 
 ## Modules
 
@@ -45,14 +46,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>2.3.0</version>
+      <version>2.4.0</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>2.3.0</version>
+            <version>2.4.0</version>
         </dependency>
   </dependencies>
 
@@ -72,8 +73,8 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.3.1.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.boot' version '2.3.3.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 }
 
@@ -89,7 +90,7 @@ dependencyManagement {
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:2.3.0"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:2.4.0"
 }
 ```
 
@@ -175,9 +176,6 @@ If the clustering works you should see messages like:
 
 
 ## Current gotchas
-
-### Infinispan and JGroups compatibility
-Currently, the latest infinispan version which Keycloak supports is `9.4.19.Final`. 
 
 ### Resteasy compatibility
 The current Keycloak codebase is only compatible with Resteasy 3.x.

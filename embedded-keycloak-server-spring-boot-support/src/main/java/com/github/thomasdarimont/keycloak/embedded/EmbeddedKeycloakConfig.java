@@ -3,13 +3,13 @@ package com.github.thomasdarimont.keycloak.embedded;
 import com.github.thomasdarimont.keycloak.embedded.support.DynamicJndiContextFactoryBuilder;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatform;
+import com.github.thomasdarimont.keycloak.embedded.support.KeycloakUndertowRequestFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.infinispan.configuration.parsing.ConfigurationBuilderHolder;
 import org.infinispan.configuration.parsing.ParserRegistry;
 import org.infinispan.manager.DefaultCacheManager;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
-import org.keycloak.services.filters.KeycloakSessionServletFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,12 +59,11 @@ public class EmbeddedKeycloakConfig {
         KeycloakCustomProperties.Infinispan infinispan = customProperties.getInfinispan();
         Resource configLocation = infinispan.getConfigLocation();
         log.info("Using infinispan configuration from {}", configLocation.getURI());
-        try (InputStream inputStream = configLocation.getInputStream()) {
-            ConfigurationBuilderHolder configBuilder = new ParserRegistry().parse(inputStream);
-            DefaultCacheManager defaultCacheManager = new DefaultCacheManager(configBuilder, false);
-            defaultCacheManager.start();
-            return defaultCacheManager;
-        }
+
+        ConfigurationBuilderHolder configBuilder = new ParserRegistry().parse(configLocation.getURL());
+        DefaultCacheManager defaultCacheManager = new DefaultCacheManager(configBuilder, false);
+        defaultCacheManager.start();
+        return defaultCacheManager;
     }
 
     @Bean
@@ -120,13 +120,14 @@ public class EmbeddedKeycloakConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "keycloakSessionManagement")
-    protected FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement(KeycloakCustomProperties customProperties) {
+    protected FilterRegistrationBean<Filter> keycloakSessionManagement(KeycloakCustomProperties customProperties) {
 
-        FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
+        FilterRegistrationBean<Filter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");
-        filter.setFilter(new KeycloakSessionServletFilter());
+        filter.setFilter(new KeycloakUndertowRequestFilter());
         filter.addUrlPatterns(customProperties.getServer().getKeycloakPath() + "/*");
 
         return filter;
     }
+
 }

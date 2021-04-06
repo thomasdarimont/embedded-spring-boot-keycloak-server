@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "This is WIP"
+exit 0
+
 echo "[-->] Detect artifactId from pom.xml"
 ARTIFACT=$(mvn -q \
 -Dexec.executable=echo \

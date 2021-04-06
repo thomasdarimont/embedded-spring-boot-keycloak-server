@@ -15,6 +15,7 @@ import javax.naming.spi.InitialContextFactoryBuilder;
 import javax.naming.spi.NamingManager;
 import javax.sql.DataSource;
 import java.util.Hashtable;
+import java.util.concurrent.ExecutorService;
 
 @Slf4j
 public class DynamicJndiContextFactoryBuilder implements InitialContextFactoryBuilder {
@@ -23,13 +24,15 @@ public class DynamicJndiContextFactoryBuilder implements InitialContextFactoryBu
 
     public static final String JNDI_CACHE_MANAGAER = "spring/infinispan/cacheManager";
 
+    public static final String JNDI_EXECUTOR_SERVICE = "java:jboss/ee/concurrency/executor/storage-provider-threads";
+
     private final InitialContext fixedInitialContext;
 
-    public DynamicJndiContextFactoryBuilder(DataSource dataSource, DefaultCacheManager cacheManager) {
-        fixedInitialContext = createFixedInitialContext(dataSource, cacheManager);
+    public DynamicJndiContextFactoryBuilder(DataSource dataSource, DefaultCacheManager cacheManager, ExecutorService executorService) {
+        fixedInitialContext = createFixedInitialContext(dataSource, cacheManager, executorService);
     }
 
-    protected InitialContext createFixedInitialContext(DataSource dataSource, DefaultCacheManager cacheManager) {
+    protected InitialContext createFixedInitialContext(DataSource dataSource, DefaultCacheManager cacheManager, ExecutorService executorService) {
 
         try {
             return new InitialContext() {
@@ -48,6 +51,10 @@ public class DynamicJndiContextFactoryBuilder implements InitialContextFactoryBu
 
                     if (JNDI_CACHE_MANAGAER.equals(name)) {
                         return cacheManager;
+                    }
+
+                    if (JNDI_EXECUTOR_SERVICE.equals(name)) {
+                        return executorService;
                     }
 
                     log.warn("JNDI name not found: {}", name);
@@ -86,6 +93,7 @@ public class DynamicJndiContextFactoryBuilder implements InitialContextFactoryBu
      * If the lookup environment is empty, we return a JndiContextFactory that returns a InitialContext which supports a lookups against a fixed set of Spring beans.
      * If the environment is not empty, we try to use the provided java.naming.factory.initial classname to create a JndiContextFactory and
      * delegate further lookups to this instance. Otherwise we simply return {@literal null}.
+     *
      * @param environment
      * @return
      */

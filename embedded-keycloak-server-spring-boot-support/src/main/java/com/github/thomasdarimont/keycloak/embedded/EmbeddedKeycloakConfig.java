@@ -1,15 +1,16 @@
 package com.github.thomasdarimont.keycloak.embedded;
 
 import com.github.thomasdarimont.keycloak.embedded.support.DynamicJndiContextFactoryBuilder;
+import com.github.thomasdarimont.keycloak.embedded.support.KeycloakUndertowRequestFilter;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatform;
-import com.github.thomasdarimont.keycloak.embedded.support.KeycloakUndertowRequestFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.infinispan.configuration.parsing.ConfigurationBuilderHolder;
 import org.infinispan.configuration.parsing.ParserRegistry;
 import org.infinispan.manager.DefaultCacheManager;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -23,6 +24,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Configuration
@@ -48,8 +51,13 @@ public class EmbeddedKeycloakConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "springBeansJndiContextFactory")
-    protected DynamicJndiContextFactoryBuilder springBeansJndiContextFactory(DataSource dataSource, DefaultCacheManager cacheManager) {
-        return new DynamicJndiContextFactoryBuilder(dataSource, cacheManager);
+    protected DynamicJndiContextFactoryBuilder springBeansJndiContextFactory(DataSource dataSource, DefaultCacheManager cacheManager, @Qualifier("fixedThreadPool") ExecutorService executorService) {
+        return new DynamicJndiContextFactoryBuilder(dataSource, cacheManager, executorService);
+    }
+
+    @Bean("fixedThreadPool")
+    public ExecutorService fixedThreadPool() {
+        return Executors.newFixedThreadPool(5);
     }
 
     @Bean

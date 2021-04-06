@@ -46,6 +46,8 @@ keycloak:
     cacheTemplates: true
     cacheThemes: true
     folder:
+      # disable the folder theme provider by default
+      enabled: false
       dir: ""
 
   scheduled:

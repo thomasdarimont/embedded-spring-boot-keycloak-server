@@ -23,7 +23,7 @@ logging:
     org.keycloak.services.managers.UserSessionManager: DEBUG
     org.keycloak.timer.basic: DEBUG
 
-#keycloak:
+keycloak:
 #  custom:
 #    server:
 #      keycloak-path: "/auth"
@@ -83,6 +83,7 @@ logging:
 #    cacheTemplates: true
 #    cacheThemes: true
 #    folder:
+#      enabled: false
 #      dir: ""
 #
 #  scheduled:

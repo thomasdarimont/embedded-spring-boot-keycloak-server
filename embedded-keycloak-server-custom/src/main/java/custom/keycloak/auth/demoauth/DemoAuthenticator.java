@@ -1,7 +1,7 @@
 package custom.keycloak.auth.demoauth;
 
-import custom.keycloak.auth.GreaterBean;
-import lombok.extern.jbosslog.JBossLog;
+import custom.keycloak.auth.GreeterBean;
+import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.models.KeycloakSession;
@@ -14,8 +14,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 
-@JBossLog
 public class DemoAuthenticator implements Authenticator {
+
+    private static Logger log = Logger.getLogger(DemoAuthenticator.class);
 
     private final KeycloakSession session;
 
@@ -28,9 +29,8 @@ public class DemoAuthenticator implements Authenticator {
 
         UserModel user = context.getUser();
 
-        greet(user.getUsername());
-
         if (user != null) {
+            greet(user.getUsername());
             log.infof("Pass through: %s%n", user.getUsername());
         } else {
             log.infof("Pass through: %s%n", "anonymous");
@@ -43,7 +43,7 @@ public class DemoAuthenticator implements Authenticator {
 
         ServletContext servletContext = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getServletContext();
         WebApplicationContext appCtxt = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
-        GreaterBean greeter = appCtxt.getBean(GreaterBean.class);
+        GreeterBean greeter = appCtxt.getBean(GreeterBean.class);
         greeter.greet(username);
     }
 

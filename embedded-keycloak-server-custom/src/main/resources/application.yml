@@ -93,6 +93,7 @@ keycloak:
     cacheTemplates: true
     cacheThemes: true
     folder:
+      enabled: false
       dir: ""
 
   scheduled:

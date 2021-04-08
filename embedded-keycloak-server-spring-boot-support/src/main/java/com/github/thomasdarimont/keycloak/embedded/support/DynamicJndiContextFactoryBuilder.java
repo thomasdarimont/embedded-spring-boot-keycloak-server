@@ -5,10 +5,7 @@ import org.infinispan.manager.DefaultCacheManager;
 import org.springframework.beans.BeanUtils;
 
 import javax.annotation.PostConstruct;
-import javax.naming.CompositeName;
 import javax.naming.InitialContext;
-import javax.naming.Name;
-import javax.naming.NameParser;
 import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
 import javax.naming.spi.InitialContextFactoryBuilder;
@@ -34,46 +31,15 @@ public class DynamicJndiContextFactoryBuilder implements InitialContextFactoryBu
 
     protected InitialContext createFixedInitialContext(DataSource dataSource, DefaultCacheManager cacheManager, ExecutorService executorService) {
 
+        Hashtable<Object, Object> jndiEnv = new Hashtable<>();
+        jndiEnv.put(JNDI_SPRING_DATASOURCE, dataSource);
+        jndiEnv.put(JNDI_CACHE_MANAGAER, cacheManager);
+        jndiEnv.put(JNDI_EXECUTOR_SERVICE, executorService);
+
         try {
-            return new InitialContext() {
-
-                @Override
-                public Object lookup(Name name) {
-                    return lookup(name.toString());
-                }
-
-                @Override
-                public Object lookup(String name) {
-
-                    if (JNDI_SPRING_DATASOURCE.equals(name)) {
-                        return dataSource;
-                    }
-
-                    if (JNDI_CACHE_MANAGAER.equals(name)) {
-                        return cacheManager;
-                    }
-
-                    if (JNDI_EXECUTOR_SERVICE.equals(name)) {
-                        return executorService;
-                    }
-
-                    log.warn("JNDI name not found: {}", name);
-
-                    return null;
-                }
-
-                @Override
-                public NameParser getNameParser(String name) {
-                    return CompositeName::new;
-                }
-
-                @Override
-                public void close() {
-                    //NOOP
-                }
-            };
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
+            return new KeycloakInitialContext(jndiEnv);
+        } catch (NamingException ne) {
+            throw new RuntimeException("Could not create KeycloakInitialContext", ne);
         }
     }
 

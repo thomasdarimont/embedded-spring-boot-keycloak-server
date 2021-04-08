@@ -116,6 +116,17 @@ keycloak:
     default:
       enabled: true
 
+  mapStorage:
+    provider: ${keycloak.mapStorage.provider:concurrenthashmap}
+    #These values are for tests only
+    dir: ${project.build.directory:target/keycloak}
+
+  client:
+    provider: ${keycloak.client.provider:jpa}
+
+  role:
+    provider: ${keycloak.role.provider:jpa}
+
   connectionsInfinispan:
     default:
       jgroupsUdpMcastAddr: "234.56.78.90"

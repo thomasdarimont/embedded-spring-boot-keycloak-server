@@ -3,13 +3,14 @@ package com.github.thomasdarimont.keycloak.embedded;
 import com.github.thomasdarimont.keycloak.embedded.support.DynamicJndiContextFactoryBuilder;
 import com.github.thomasdarimont.keycloak.embedded.support.KeycloakUndertowRequestFilter;
 import com.github.thomasdarimont.keycloak.embedded.support.SpringBootConfigProvider;
-import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatform;
+import com.github.thomasdarimont.keycloak.embedded.support.SpringBootPlatformProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.infinispan.configuration.parsing.ConfigurationBuilderHolder;
 import org.infinispan.configuration.parsing.ParserRegistry;
 import org.infinispan.manager.DefaultCacheManager;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
+import org.keycloak.platform.Platform;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -39,8 +40,8 @@ public class EmbeddedKeycloakConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "springBootPlatform")
-    protected SpringBootPlatform springBootPlatform() {
-        return new SpringBootPlatform();
+    protected SpringBootPlatformProvider springBootPlatform() {
+        return (SpringBootPlatformProvider) Platform.getPlatform();
     }
 
     @Bean

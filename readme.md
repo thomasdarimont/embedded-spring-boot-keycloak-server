@@ -17,6 +17,7 @@ Embedded Keycloak Server | Keycloak
 1.x.y | 9.0.3
 2.3.y | 10.0.2
 2.4.y | 11.0.2
+3.0.y | 12.0.4
 
 ## Modules
 
@@ -46,14 +47,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>2.4.0</version>
+      <version>3.0.0</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.0</version>
         </dependency>
   </dependencies>
 
@@ -73,7 +74,7 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.3.3.RELEASE'
+	id 'org.springframework.boot' version '2.4.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 }
@@ -85,12 +86,12 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:2.3.0'
+    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:3.0.0'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:2.4.0"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:3.0.0"
 }
 ```
 

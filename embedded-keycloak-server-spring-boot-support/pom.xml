@@ -7,7 +7,7 @@
     <parent>
         <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
         <groupId>com.github.thomasdarimont.keycloak</groupId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.1</version>
     </parent>
 
     <artifactId>embedded-keycloak-server-spring-boot-support</artifactId>

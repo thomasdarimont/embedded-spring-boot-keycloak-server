@@ -117,15 +117,13 @@ keycloak:
       enabled: true
 
   mapStorage:
-    provider: ${keycloak.mapStorage.provider:concurrenthashmap}
-    #These values are for tests only
-    dir: ${project.build.directory:target/keycloak}
+    provider: concurrenthashmap
 
   client:
-    provider: ${keycloak.client.provider:jpa}
+    provider: jpa
 
   role:
-    provider: ${keycloak.role.provider:jpa}
+    provider: jpa
 
   connectionsInfinispan:
     default:

@@ -55,7 +55,7 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         AdminUser adminUser = customProperties.getAdminUser();
 
         String username = adminUser.getUsername();
-        if (StringUtils.isEmpty(username)) {
+        if (!(StringUtils.hasLength(username) || StringUtils.hasText(username))) {
             return;
         }
 

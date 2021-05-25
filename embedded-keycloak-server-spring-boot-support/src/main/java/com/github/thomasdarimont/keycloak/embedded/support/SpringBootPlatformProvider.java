@@ -9,13 +9,17 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.ContextStoppedEvent;
 import org.springframework.context.event.SmartApplicationListener;
 
+import java.io.File;
+
 @Slf4j
 @AutoService(PlatformProvider.class)
 public class SpringBootPlatformProvider implements PlatformProvider, SmartApplicationListener {
 
-    Runnable onStartup;
+    protected File tmpDir;
 
-    Runnable onShutdown;
+    protected Runnable onStartup;
+
+    protected Runnable onShutdown;
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
@@ -54,11 +58,29 @@ public class SpringBootPlatformProvider implements PlatformProvider, SmartApplic
         throw new RuntimeException(cause);
     }
 
-    private void shutdown() {
+    @Override
+    public File getTmpDirectory() {
+        return tmpDir;
+    }
+
+    protected void shutdown() {
         this.onShutdown.run();
     }
 
-    private void startup() {
+    protected void startup() {
+        this.tmpDir = createTempDir();
         this.onStartup.run();
+    }
+
+    protected File createTempDir() {
+        String tmpDirBase = System.getProperty("java.io.tmpdir");
+        File tmpDir = new File(tmpDirBase, "keycloak-spring-tmp");
+        boolean couldCreateDirs = tmpDir.mkdirs();
+        if (couldCreateDirs || tmpDir.exists()) {
+            log.debug("Using server tmp directory: {}", tmpDir.getAbsolutePath());
+            return tmpDir;
+        }
+
+        throw new RuntimeException("Failed to create temp directory: " + tmpDir.getAbsolutePath());
     }
 }

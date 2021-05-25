@@ -15,13 +15,11 @@
         <transport stack="jgroups" lock-timeout="60000"/>
 
         <local-cache name="realms">
-            <memory>
-                <object size="10000"/>
+            <memory max-count="10000">
             </memory>
         </local-cache>
         <local-cache name="users">
-            <memory>
-                <object size="10000"/>
+            <memory max-count="10000">
             </memory>
         </local-cache>
         <distributed-cache name="sessions" owners="1"/>
@@ -31,21 +29,18 @@
         <distributed-cache name="offlineClientSessions" owners="1"/>
         <distributed-cache name="loginFailures" owners="1"/>
         <local-cache name="authorization">
-            <memory>
-                <object size="10000"/>
+            <memory max-count="10000">
             </memory>
         </local-cache>
         <replicated-cache name="work"/>
         <local-cache name="keys">
             <expiration max-idle="3600000"/>
-            <memory>
-                <object size="1000"/>
+            <memory max-count="1000">
             </memory>
         </local-cache>
         <distributed-cache name="actionTokens" owners="2">
             <expiration max-idle="-1" interval="300000"/>
-            <memory>
-                <object size="-1"/>
+            <memory max-count="-1">
             </memory>
         </distributed-cache>
     </cache-container>

@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.4</version>
+        <version>2.4.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.github.thomasdarimont.keycloak</groupId>
     <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -25,13 +25,13 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <keycloak.version>12.0.4</keycloak.version>
-        <resteasy.version>3.13.2.Final</resteasy.version>
-        <infinispan.version>11.0.4.Final</infinispan.version>
-        <jgroups.version>4.2.5.Final</jgroups.version>
-        <smallrye-metrics.version>2.4.2</smallrye-metrics.version> <!-- 2.4.0-2.4.2 causes compilation error with Java 11 on Maven -->
+        <keycloak.version>13.0.1</keycloak.version>
+        <resteasy.version>3.15.1.Final</resteasy.version>
+        <infinispan.version>11.0.9.Final</infinispan.version>
+        <jgroups.version>4.2.11.Final</jgroups.version>
+        <smallrye-metrics.version>2.4.6</smallrye-metrics.version> <!-- 2.4.0-2.4.2 causes compilation error with Java 11 on Maven -->
 
-        <auto-service.version>1.0-rc7</auto-service.version>
+        <auto-service.version>1.0</auto-service.version>
     </properties>
 
     <modules>
@@ -44,11 +44,6 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-indexer</artifactId>
-            <optional>true</optional>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

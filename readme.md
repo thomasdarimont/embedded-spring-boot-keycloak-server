@@ -10,15 +10,15 @@ Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environ
 
 ## Compatibility  
 
-The following table shows the Keycloak versions used by the embedded Keycloak Server version.   
+The following table shows the Keycloak versions used by the embedded Keycloak Server version as well as the Spring Boot version.
 
-Embedded Keycloak Server | Keycloak
----|---
-1.x.y | 9.0.3
-2.3.y | 10.0.2
-2.4.y | 11.0.2
-3.0.y | 12.0.4
-4.0.y | 13.0.1
+Embedded Keycloak Server | Keycloak | Spring Boot
+---|---|---
+1.x.y | 9.0.3 | 2.2.7.RELEASE
+2.3.y | 10.0.2 | 2.3.1.RELEASE
+2.4.y | 11.0.2 | 2.3.3.RELEASE
+3.0.y | 12.0.4 | 2.4.4
+4.0.y | 13.0.1 | 2.4.6
 
 ## Modules
 
@@ -75,7 +75,7 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.4.6.RELEASE'
+	id 'org.springframework.boot' version '2.4.6'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }

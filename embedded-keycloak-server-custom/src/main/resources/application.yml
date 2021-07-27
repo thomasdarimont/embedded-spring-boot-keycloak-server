@@ -29,7 +29,7 @@ server:
     context-path: "/"
   shutdown: graceful
 
-keycloak:
+keycloak-embedded:
   custom:
     server:
       keycloak-path: "/auth"

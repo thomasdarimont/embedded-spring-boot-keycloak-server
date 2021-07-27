@@ -9,7 +9,7 @@ import org.springframework.core.io.Resource;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "keycloak.custom")
+@ConfigurationProperties(prefix = "keycloak-embedded.custom")
 public class KeycloakCustomProperties {
 
     Server server = new Server();

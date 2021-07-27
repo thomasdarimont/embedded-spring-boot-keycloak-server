@@ -1,6 +1,6 @@
 # Default Keycloak configuration, adapted from Keycloak's keycloak-server.json
 
-keycloak:
+keycloak-embedded:
   hostname:
     provider: "default"
     default:

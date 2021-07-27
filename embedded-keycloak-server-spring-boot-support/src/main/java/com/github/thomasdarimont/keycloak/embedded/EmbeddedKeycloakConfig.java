@@ -113,7 +113,7 @@ public class EmbeddedKeycloakConfig {
             profile.load(in);
 
             log.info("Found profile.properties on classpath.");
-            String profilePrefix = "keycloak.profile.";
+            String profilePrefix = "keycloak-embeded.profile.";
             for (Object key : profile.keySet()) {
                 String value = (String) profile.get(key);
                 String featureName = key.toString().toLowerCase();

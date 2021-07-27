@@ -23,15 +23,15 @@ logging:
     org.keycloak.services.managers.UserSessionManager: DEBUG
     org.keycloak.timer.basic: DEBUG
 
-keycloak:
-#  custom:
-#    server:
-#      keycloak-path: "/auth"
-#
-#    adminUser:
-#      username: admin
-#      password: admin
-#      create-admin-user-enabled: true
+keycloak-embedded:
+  custom:
+    server:
+      keycloak-path: "/auth"
+
+    adminUser:
+      username: admin
+      password: admin
+      create-admin-user-enabled: true
 #
 #    migration:
 #      importProvider: singleFile

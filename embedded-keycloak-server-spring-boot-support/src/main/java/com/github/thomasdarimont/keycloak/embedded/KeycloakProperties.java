@@ -8,6 +8,6 @@ import java.util.HashMap;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "keycloak")
+@ConfigurationProperties(prefix = "keycloak-embedded")
 public class KeycloakProperties extends HashMap<String, Object> {
 }

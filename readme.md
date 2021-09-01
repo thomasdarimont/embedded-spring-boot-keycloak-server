@@ -19,6 +19,7 @@ Embedded Keycloak Server | Keycloak
 2.4.y | 11.0.2
 3.0.y | 12.0.4
 4.0.y | 13.0.1
+5.0.y | 15.0.2
 
 ## Modules
 
@@ -48,14 +49,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>4.0.0</version>
+      <version>5.0.0</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>4.0.0</version>
+            <version>5.0.0</version>
         </dependency>
   </dependencies>
 

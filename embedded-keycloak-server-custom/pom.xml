@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.thomasdarimont.keycloak</groupId>
         <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-        <version>5.0.1-SNAPSHOT</version>
+        <version>5.0.1</version>
         <relativePath/>
     </parent>
 

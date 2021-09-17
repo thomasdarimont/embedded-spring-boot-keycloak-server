@@ -49,14 +49,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>5.0.0</version>
+      <version>5.0.2</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>5.0.0</version>
+            <version>5.0.2</version>
         </dependency>
   </dependencies>
 
@@ -76,7 +76,7 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.4.6.RELEASE'
+	id 'org.springframework.boot' version '2.5.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -88,12 +88,12 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:4.0.0'
+    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:5.0.2'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:4.0.0"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:5.0.2"
 }
 ```
 

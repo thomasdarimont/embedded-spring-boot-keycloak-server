@@ -41,7 +41,7 @@ This is an example module showing how to embed a Keycloak server in a Spring Boo
 
 To add Keycloak to a Spring Boot project, add a dependency to the Spring Boot starter and make sure to use this project's BOM/parent so that you're getting all the right dependency versions:
 
-Note that the artifacts are currently distributed via [jitpack](https://jitpack.io/).
+Note that the artifacts are currently distributed via [jitpack](https://jitpack.io/), see the corresponding [jitpack project](https://jitpack.io/#thomasdarimont/embedded-spring-boot-keycloak-server).
 
 In Maven:
 ``` xml

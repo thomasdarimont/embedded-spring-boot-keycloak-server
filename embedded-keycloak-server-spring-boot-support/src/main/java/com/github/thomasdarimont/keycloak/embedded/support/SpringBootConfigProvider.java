@@ -86,7 +86,7 @@ public class SpringBootConfigProvider implements Config.ConfigProvider {
         public String[] getArray(String key) {
             Object obj = getObject(key, null);
             if (obj == null) {
-                return new String[0];
+                return null;
             }
 
             // TODO find better way to parse config yaml into a list instead of a LinkedHashMap in the first place

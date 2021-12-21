@@ -84,7 +84,7 @@ public class EmbeddedKeycloakConfig {
         ServletRegistrationBean<HttpServlet30Dispatcher> servlet = new ServletRegistrationBean<>(new HttpServlet30Dispatcher());
         servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
 
-        servlet.addInitParameter("resteasy.allowGzip", "true");
+        servlet.addInitParameter("resteasy.allowGzip", "false");
         servlet.addInitParameter("keycloak.embedded", "true");
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_EXPAND_ENTITY_REFERENCES, "false");
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SECURE_PROCESSING_FEATURE, "true");

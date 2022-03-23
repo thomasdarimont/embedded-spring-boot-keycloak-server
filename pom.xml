@@ -25,16 +25,16 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <keycloak.version>15.0.2</keycloak.version>
+        <keycloak.version>15.1.1</keycloak.version>
         <resteasy.version>3.15.1.Final</resteasy.version>
         <infinispan.version>11.0.9.Final</infinispan.version>
         <jgroups.version>4.2.11.Final</jgroups.version>
-        <smallrye-metrics.version>2.4.6</smallrye-metrics.version> <!-- 2.4.0-2.4.2 causes compilation error with Java 11 on Maven -->
+        <smallrye-metrics.version>3.0.1</smallrye-metrics.version>
         <liquibase.version>3.6.3</liquibase.version>
 
-        <auto-service.version>1.0</auto-service.version>
+        <auto-service.version>1.0.1</auto-service.version>
 
-        <git-commit-id-plugin.version>4.0.4</git-commit-id-plugin.version>
+        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
     </properties>
 
     <modules>

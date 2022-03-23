@@ -7,6 +7,7 @@ import org.keycloak.Config;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Delegates Config Key lookups to Spring Boot Properties.
@@ -148,6 +149,11 @@ public class SpringBootConfigProvider implements Config.ConfigProvider {
         @Override
         public Config.Scope scope(String... path) {
             return SpringBootConfigProvider.this.scope(path);
+        }
+
+        @Override
+        public Set<String> getPropertyNames() {
+            return map.keySet();
         }
     }
 }

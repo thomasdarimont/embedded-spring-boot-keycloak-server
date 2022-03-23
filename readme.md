@@ -21,6 +21,7 @@ Embedded Keycloak Server | Keycloak
 4.0.y | 13.0.1
 5.0.y | 15.0.2
 5.1.y | 15.1.1
+6.0.y / 16.1.1
 
 ## Modules
 

@@ -34,7 +34,7 @@
 
         <auto-service.version>1.0.1</auto-service.version>
 
-        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
+        <git-commit-id-plugin.version>4.0.4</git-commit-id-plugin.version>
         <httpclient.version>4.5.13</httpclient.version>
     </properties>
 

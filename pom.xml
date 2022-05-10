@@ -25,12 +25,12 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <keycloak.version>17.0.0</keycloak.version>
+        <keycloak.version>17.0.1</keycloak.version>
         <resteasy.version>4.7.4.Final</resteasy.version>
         <infinispan.version>12.1.7.Final</infinispan.version>
         <jgroups.version>4.2.15.Final</jgroups.version>
         <smallrye-metrics.version>3.0.3</smallrye-metrics.version>
-        <liquibase.version>4.6.2</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
 
         <auto-service.version>1.0.1</auto-service.version>
 

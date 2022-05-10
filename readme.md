@@ -13,16 +13,16 @@ Keycloak is embedded by hosting it's JAX-RS Application in a Spring-Boot environ
 The following table shows the Keycloak versions used by the embedded Keycloak Server version.   
 
 Embedded Keycloak Server | Keycloak | Spring Boot
----|---|---
-1.x.y | 9.0.3 | 2.2.7.RELEASE
-2.3.y | 10.0.2 | 2.3.1.RELEASE
-2.4.y | 11.0.2 | 2.3.3.RELEASE
-3.0.y | 12.0.4 | 2.4.4
-4.0.y | 13.0.1 | 2.4.6
-5.0.y | 15.0.2 | 2.5.4
-5.1.y | 15.1.1 | 2.5.10
-6.0.y | 16.1.1 | 2.5.10
-7.0.y | 17.0.0 | 2.6.4
+---|----------|---
+1.x.y | 9.0.3    | 2.2.7.RELEASE
+2.3.y | 10.0.2   | 2.3.1.RELEASE
+2.4.y | 11.0.2   | 2.3.3.RELEASE
+3.0.y | 12.0.4   | 2.4.4
+4.0.y | 13.0.1   | 2.4.6
+5.0.y | 15.0.2   | 2.5.4
+5.1.y | 15.1.1   | 2.5.10
+6.0.y | 16.1.1   | 2.5.10
+7.0.y | 17.0.1   | 2.6.7
 
 ## Modules
 
@@ -52,14 +52,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>7.0.2</version>
+      <version>7.0.3</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>7.0.2</version>
+            <version>7.0.3</version>
         </dependency>
   </dependencies>
 
@@ -79,7 +79,7 @@ In Maven:
 In Gradle:
 ``` groovy
 plugins {
-	id 'org.springframework.boot' version '2.6.4'
+	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -91,12 +91,12 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:7.0.2'
+    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:7.0.3'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:7.0.2"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:7.0.3"
 }
 ```
 

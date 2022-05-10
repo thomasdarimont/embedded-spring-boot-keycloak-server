@@ -23,6 +23,7 @@ Embedded Keycloak Server | Keycloak | Spring Boot
 5.1.y | 15.1.1   | 2.5.10
 6.0.y | 16.1.1   | 2.5.10
 7.0.y | 17.0.1   | 2.6.7
+8.0.y | 18.0.0   | 2.6.7
 
 ## Modules
 
@@ -52,14 +53,14 @@ In Maven:
   <parent>
       <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
       <artifactId>embedded-keycloak-server-spring-boot-parent</artifactId>
-      <version>7.0.3</version>
+      <version>8.0.0</version>
   </parent>
 
   <dependencies>
         <dependency>
             <groupId>com.github.thomasdarimont.embedded-spring-boot-keycloak-server</groupId>
             <artifactId>embedded-keycloak-server-spring-boot-starter</artifactId>
-            <version>7.0.3</version>
+            <version>8.0.0</version>
         </dependency>
   </dependencies>
 
@@ -91,12 +92,12 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:7.0.3'
+    mavenBom 'com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-parent:8.0.0'
   }
 }
 
 dependencies {
-  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:7.0.3"
+  implementation "com.github.thomasdarimont.embedded-spring-boot-keycloak-server:embedded-keycloak-server-spring-boot-starter:8.0.0"
 }
 ```
 

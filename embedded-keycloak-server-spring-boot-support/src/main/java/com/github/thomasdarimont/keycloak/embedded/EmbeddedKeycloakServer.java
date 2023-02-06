@@ -20,7 +20,7 @@ public class EmbeddedKeycloakServer {
 
         return (evt) -> {
 
-            log.infof("Using Keycloak Version: %s", Version.VERSION_KEYCLOAK);
+            log.infof("Using Keycloak Version: %s", Version.VERSION);
             log.infof("Enabled Keycloak Features (Deprecated): %s", Profile.getDeprecatedFeatures());
             log.infof("Enabled Keycloak Features (Preview): %s", Profile.getPreviewFeatures());
             log.infof("Enabled Keycloak Features (Experimental): %s", Profile.getExperimentalFeatures());

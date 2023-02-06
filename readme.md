@@ -24,6 +24,8 @@ Embedded Keycloak Server | Keycloak | Spring Boot
 6.0.y | 16.1.1   | 2.5.10
 7.0.y | 17.0.1   | 2.6.7
 8.0.y | 18.0.0   | 2.6.7
+9.0.y | unsupported
+10.0.y | 20.0.0  | 2.7.8
 
 ## Modules
 

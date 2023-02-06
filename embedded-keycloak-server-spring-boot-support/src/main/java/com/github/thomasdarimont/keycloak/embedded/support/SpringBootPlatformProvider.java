@@ -2,6 +2,7 @@ package com.github.thomasdarimont.keycloak.embedded.support;
 
 import com.google.auto.service.AutoService;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.Config;
 import org.keycloak.platform.PlatformProvider;
 import org.keycloak.services.ServicesLogger;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -61,6 +62,11 @@ public class SpringBootPlatformProvider implements PlatformProvider, SmartApplic
     @Override
     public File getTmpDirectory() {
         return tmpDir;
+    }
+
+    @Override
+    public ClassLoader getScriptEngineClassLoader(Config.Scope scope) {
+        throw new UnsupportedOperationException();
     }
 
     protected void shutdown() {

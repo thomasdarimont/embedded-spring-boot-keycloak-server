@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.7</version>
+        <version>2.7.8</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -25,9 +25,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <keycloak.version>18.0.0</keycloak.version>
-        <resteasy.version>4.7.4.Final</resteasy.version>
-        <infinispan.version>13.0.8.Final</infinispan.version>
+        <keycloak.version>20.0.3</keycloak.version>
+        <resteasy.version>4.7.7.Final</resteasy.version>
+        <infinispan.version>13.0.10.Final</infinispan.version>
         <jgroups.version>4.2.20.Final</jgroups.version>
         <smallrye-metrics.version>3.0.3</smallrye-metrics.version>
         <liquibase.version>4.8.0</liquibase.version>
@@ -203,6 +203,36 @@
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-model-jpa</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-crypto-default</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-ui</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-model-legacy</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-model-legacy-private</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-model-legacy-services</artifactId>
             <version>${keycloak.version}</version>
         </dependency>
 
